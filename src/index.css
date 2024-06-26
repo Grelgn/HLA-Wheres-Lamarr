@@ -1,0 +1,23 @@
+body {
+	margin: 0;
+	font-family: "Exo 2", sans-serif;
+}
+
+header {
+	background-color: black;
+	padding: 10px;
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: center;
+	align-items: center;
+	gap: 60px;
+}
+
+header h1 {
+	color: white;
+	font-size: 4.1rem;
+	font-weight: 100;
+	margin: 0;
+	margin-top: 20px;
+	letter-spacing: 25px;
+}
