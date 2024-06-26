@@ -1,10 +1,12 @@
 body {
 	margin: 0;
+  height: 100svh;
 	font-family: "Exo 2", sans-serif;
+  background-color: black;
+  color: white;
 }
 
 header {
-	background-color: black;
 	padding: 10px;
 	display: grid;
 	grid-auto-flow: column;
@@ -14,10 +16,41 @@ header {
 }
 
 header h1 {
-	color: white;
 	font-size: 4.1rem;
 	font-weight: 100;
 	margin: 0;
 	margin-top: 20px;
 	letter-spacing: 25px;
+}
+
+footer {
+  background-color: black;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+
+footer p {
+  margin: 8px;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.footer-text {
+  font-weight: 300;
+  letter-spacing: 5px;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+footer i {
+  font-size: 1.5rem;
 }
