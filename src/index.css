@@ -1,3 +1,11 @@
+:root {
+	--combine-blue: hsl(189, 95%, 44%);
+	--combine-light-blue: hsl(180, 57%, 57%);
+	--combine-hover: hsl(194, 98%, 37%);
+	--combine-hovertext: hsl(188, 74%, 53%);
+	--combine-dark: hsl(192, 81%, 33%);
+}
+
 body {
 	margin: 0;
   height: 100svh;
@@ -59,6 +67,8 @@ footer i {
 
 main {
   position: relative;
+  display: grid;
+  align-content: space-between;
 }
 
 video {
@@ -68,4 +78,67 @@ video {
   position: absolute;
   object-fit: fill;
   z-index: -1;
+  border-left: 0.5vw solid var(--combine-blue);
+  box-sizing: border-box;
+}
+
+.game-bottom {
+  position: relative;
+}
+
+.game-bottom img {
+	filter: brightness(140%);
+  width: 15vw;
+  height: auto;
+  margin-left: 1vw;
+  margin-bottom: 1vh;
+}
+
+.game-bottom p {
+  margin: 0;
+  position: absolute;
+  bottom: 1.7vh;
+  left: 0.9vw;
+  font-size: 0.64vw;
+  color: var(--combine-blue);
+  font-weight: 600;
+}
+
+.game-top {
+	border-bottom: 1px solid var(--combine-dark);
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: space-between;
+	color: var(--combine-dark);
+  margin-left: 1vw;
+  margin-right: 0.5vw;
+}
+
+.top-right {
+	display: grid;
+	grid-auto-flow: column;
+	align-items: end;
+	gap: 5px;
+	margin-bottom: 4px;
+}
+
+.top-right p {
+	font-size: 0.6rem;
+	font-weight: 600;
+	margin: 0;
+	padding-bottom: 2px;
+}
+
+.top-right img {
+	height: 50px;
+	filter: brightness(100%) sepia(100) saturate(13) hue-rotate(120deg);
+}
+
+.top-left {
+	font-size: 1.7rem;
+	display: grid;
+	align-items: end;
+	margin-bottom: 10px;
+  font-weight: 500;
+	color: var(--combine-blue);
 }

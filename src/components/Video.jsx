@@ -1,5 +1,5 @@
-import vidLoop from "/dist/assets/Wupgrade_Loop.mp4";
-import tempBG from "/dist/assets/temp_background.png"
+import vidLoop from "/src/assets/Wupgrade_Loop.mp4";
+import tempBG from "/src/assets/temp_background.png"
 
 function Video() {
 	return (

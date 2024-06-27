@@ -1,4 +1,4 @@
-import imgLogo from "/dist/assets/HLA_logo.png"
+import imgLogo from "/src/assets/HLA_logo.png"
 
 function Header() {
 	return (
