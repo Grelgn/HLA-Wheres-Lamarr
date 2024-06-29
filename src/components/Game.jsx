@@ -98,6 +98,7 @@ function Game() {
 	}
 
 	function toggleFullscreen(event) {
+		// var element = document.querySelector("main");
 		var element = document.body;
 
 		if (event instanceof HTMLElement) {
@@ -128,18 +129,35 @@ function Game() {
 	function handleImgClick(e) {
 		if (!selectVisibility) setSelectVisibility(true);
 		let { x, y, height } = e.target.getBoundingClientRect();
-		x = e.clientX - x;
-		y = e.clientY - y;
+		const areaX = e.clientX - x;
+		const areaY = e.clientY - y;
 		const ratio = 1080 / height;
-		const realX = x * ratio;
-		const realY = y * ratio;
-    console.log(`X: ${x} Y: ${y}`);
+		let realX = areaX * ratio;
+		let realY = areaY * ratio;
+		console.log(`X: ${areaX} Y: ${areaY}`);
 		console.log(`X: ${realX} Y: ${realY}`);
 
+		if (realX < 41) realX = 41;
+		if (realY < 42) realY = 42;
+
+		if (realX > 1877) realX = 1877;
+		if (realY > 1035) realY = 1035;
+
+    const coordX = realX / ratio + x;
+    const coordY = realY / ratio + y;
+
+		const header = document.querySelector("header");
+		const headerHeight = header.clientHeight;
+
 		const selection = document.querySelector(".select-area");
-		selection.style.left = `calc(${x}px + 1vw - 25px)`;
-		selection.style.top = `calc(${y}px + 55px - 25px)`;
+		selection.style.left = `calc(${coordX}px - 2.5vh)`;
+		selection.style.top = `calc(${coordY}px - 2.5vh - ${headerHeight}px)`;
 	}
+
+	// Prevent selected area to move uintentionally
+	window.addEventListener("resize", () => {
+		if (selectVisibility) setSelectVisibility(false);
+	});
 
 	return (
 		<main>

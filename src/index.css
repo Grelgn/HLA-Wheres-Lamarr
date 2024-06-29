@@ -191,8 +191,8 @@ button:hover {
 }
 
 .select-area {
-	height: 50px;
-	width: 50px;
+	height: 5vh;
+	width: 5vh;
 	border: 1px solid var(--combine-dark);
 	position: absolute;
 	left: 0px;
