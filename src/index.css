@@ -85,24 +85,28 @@ video {
 
 .game-bottom {
 	position: relative;
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: space-between;
+	align-items: end;
+	margin-bottom: 0.7vh;
+	margin-left: 1vw;
+	margin-right: 0.5vw;
 }
 
 .game-bottom img {
 	filter: brightness(140%);
-	width: 15vw;
+	width: 310px;
 	height: auto;
-	margin-left: 1vw;
-	margin-bottom: 1vh;
 	border-top: 1px solid var(--combine-dark);
-	padding-top: 10px;
+	padding-top: 5px;
 }
 
 .game-bottom p {
 	margin: 0;
 	position: absolute;
-	bottom: 1.7vh;
-	left: 0.9vw;
-	font-size: 0.64vw;
+	bottom: 0.5vh;
+	font-size: 0.8rem;
 	font-weight: 600;
 }
 
@@ -125,7 +129,7 @@ video {
 }
 
 .top-right p {
-	font-size: 0.6rem;
+	font-size: 0.75rem;
 	font-weight: 600;
 	margin: 0;
 	padding-bottom: 2px;
@@ -158,7 +162,7 @@ video {
 	font-size: 1.5rem;
 }
 
-.start button {
+button {
 	background-color: transparent;
 	border: 1px solid var(--combine-blue);
 	cursor: pointer;
@@ -175,4 +179,13 @@ button:hover {
 
 .invisible {
 	visibility: hidden;
+}
+
+.game {
+	overflow: hidden;
+}
+
+.game img {
+	height: calc(100vh - 119px - 35px - 55px - 115px);
+	margin-left: 1vw;
 }

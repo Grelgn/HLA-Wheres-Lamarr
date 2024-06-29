@@ -15,6 +15,7 @@ function Game() {
 	const [video, setVideo] = useState("Loop");
 	const [startVisibility, setStartVisibility] = useState(true);
 	const [UIvisibility, setUIvisibility] = useState(true);
+	const [gameVisibility, setGameVisibility] = useState(false);
 
 	// Sounds
 	const audioSelect = new Audio(audSelect);
@@ -50,6 +51,16 @@ function Game() {
 		}
 	}, [UIvisibility]);
 
+	//Show-Hide Game
+	useEffect(() => {
+		const vis = document.querySelector(".game");
+		if (gameVisibility) {
+			vis.classList.remove("invisible");
+		} else {
+			vis.classList.add("invisible");
+		}
+	}, [gameVisibility]);
+
 	// Button hover
 	function handleHover() {
 		const audioHover = new Audio(audHover);
@@ -70,8 +81,37 @@ function Game() {
 		setTimeout(() => {
 			audioComplete.play();
 			setVideo("Loop");
-      setUIvisibility(true);
+			setUIvisibility(true);
+			setGameVisibility(true);
 		}, 9000);
+	}
+
+	function toggleFullscreen(event) {
+		var element = document.body;
+
+		if (event instanceof HTMLElement) {
+			element = event;
+		}
+
+		var isFullscreen =
+			document.webkitIsFullScreen || document.mozFullScreen || false;
+
+		element.requestFullScreen =
+			element.requestFullScreen ||
+			element.webkitRequestFullScreen ||
+			element.mozRequestFullScreen ||
+			function () {
+				return false;
+			};
+		document.cancelFullScreen =
+			document.cancelFullScreen ||
+			document.webkitCancelFullScreen ||
+			document.mozCancelFullScreen ||
+			function () {
+				return false;
+			};
+
+		isFullscreen ? document.cancelFullScreen() : element.requestFullScreen();
 	}
 
 	return (
@@ -86,9 +126,17 @@ function Game() {
 					<img src={imgCombineLogo} />
 				</div>
 			</div>
+			<div className="game invisible">
+				<img src="https://dummyimage.com/1920x1080" alt="" />
+			</div>
 			<div className="game-bottom">
-				<img src={imgBarcode} />
-				<p>CIVIL PROTECTION ANNEX 19-81572</p>
+				<div className="bottom-left">
+					<img src={imgBarcode} />
+					<p>CIVIL PROTECTION ANNEX 19-81572</p>
+				</div>
+				<div className="bottom-right">
+					<button onClick={toggleFullscreen} onMouseEnter={handleHover}>Full Screen</button>
+				</div>
 			</div>
 			<div className="start">
 				<h2>EXPOSE AND TAG ALL PARASITICS</h2>
