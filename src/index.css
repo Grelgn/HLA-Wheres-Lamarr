@@ -69,6 +69,7 @@ main {
   position: relative;
   display: grid;
   align-content: space-between;
+	color: var(--combine-blue);
 }
 
 video {
@@ -84,6 +85,7 @@ video {
 
 .game-bottom {
   position: relative;
+	
 }
 
 .game-bottom img {
@@ -92,6 +94,8 @@ video {
   height: auto;
   margin-left: 1vw;
   margin-bottom: 1vh;
+	border-top: 1px solid var(--combine-dark);
+	padding-top: 10px;
 }
 
 .game-bottom p {
@@ -100,7 +104,6 @@ video {
   bottom: 1.7vh;
   left: 0.9vw;
   font-size: 0.64vw;
-  color: var(--combine-blue);
   font-weight: 600;
 }
 
@@ -109,12 +112,12 @@ video {
 	display: grid;
 	grid-auto-flow: column;
 	justify-content: space-between;
-	color: var(--combine-dark);
   margin-left: 1vw;
   margin-right: 0.5vw;
 }
 
 .top-right {
+	color: var(--combine-dark);
 	display: grid;
 	grid-auto-flow: column;
 	align-items: end;
@@ -140,5 +143,32 @@ video {
 	align-items: end;
 	margin-bottom: 10px;
   font-weight: 500;
+}
+
+.start {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: grid;
+	transform: translateX(-50%) translateY(-60%);
+}
+
+.start h2, .start button {
+	font-weight: 400;
+	font-size: 1.5rem;
+}
+
+.start button {
+	background-color: transparent;
+	border: 1px solid var(--combine-blue);
+	cursor: pointer;
 	color: var(--combine-blue);
+	padding: 10px;
+	font-size: 1.2rem;
+}
+
+button:hover {
+	background-color: var(--combine-hover);
+	border-color: var(--combine-hover);
+	color: var(--combine-hovertext);
 }
