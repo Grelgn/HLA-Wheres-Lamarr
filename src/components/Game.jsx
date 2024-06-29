@@ -16,6 +16,7 @@ function Game() {
 	const [startVisibility, setStartVisibility] = useState(true);
 	const [UIvisibility, setUIvisibility] = useState(true);
 	const [gameVisibility, setGameVisibility] = useState(false);
+	const [selectVisibility, setSelectVisibility] = useState(false);
 
 	// Sounds
 	const audioSelect = new Audio(audSelect);
@@ -60,6 +61,16 @@ function Game() {
 			vis.classList.add("invisible");
 		}
 	}, [gameVisibility]);
+
+	//Show-Hide Select Area
+	useEffect(() => {
+		const vis = document.querySelector(".select-area");
+		if (selectVisibility) {
+			vis.classList.remove("invisible");
+		} else {
+			vis.classList.add("invisible");
+		}
+	}, [selectVisibility]);
 
 	// Button hover
 	function handleHover() {
@@ -114,6 +125,22 @@ function Game() {
 		isFullscreen ? document.cancelFullScreen() : element.requestFullScreen();
 	}
 
+	function handleImgClick(e) {
+		if (!selectVisibility) setSelectVisibility(true);
+		let { x, y, height } = e.target.getBoundingClientRect();
+		x = e.clientX - x;
+		y = e.clientY - y;
+		const ratio = 1080 / height;
+		const realX = x * ratio;
+		const realY = y * ratio;
+    console.log(`X: ${x} Y: ${y}`);
+		console.log(`X: ${realX} Y: ${realY}`);
+
+		const selection = document.querySelector(".select-area");
+		selection.style.left = `calc(${x}px + 1vw - 25px)`;
+		selection.style.top = `calc(${y}px + 55px - 25px)`;
+	}
+
 	return (
 		<main>
 			<Video videoState={video} key={video} />
@@ -126,8 +153,9 @@ function Game() {
 					<img src={imgCombineLogo} />
 				</div>
 			</div>
-			<div className="game invisible">
-				<img src="https://dummyimage.com/1920x1080" alt="" />
+			<div className="game">
+				<img onClick={handleImgClick} src="https://dummyimage.com/1920x1080" />
+				<div className="select-area"></div>
 			</div>
 			<div className="game-bottom">
 				<div className="bottom-left">
@@ -135,7 +163,9 @@ function Game() {
 					<p>CIVIL PROTECTION ANNEX 19-81572</p>
 				</div>
 				<div className="bottom-right">
-					<button onClick={toggleFullscreen} onMouseEnter={handleHover}>Full Screen</button>
+					<button onClick={toggleFullscreen} onMouseEnter={handleHover}>
+						Full Screen
+					</button>
 				</div>
 			</div>
 			<div className="start">

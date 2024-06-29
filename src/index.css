@@ -189,3 +189,13 @@ button:hover {
 	height: calc(100vh - 119px - 35px - 55px - 115px);
 	margin-left: 1vw;
 }
+
+.select-area {
+	height: 50px;
+	width: 50px;
+	border: 1px solid var(--combine-dark);
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	pointer-events: none;
+}
