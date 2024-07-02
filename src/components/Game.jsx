@@ -11,12 +11,25 @@ import audStart from "/src/assets/start.wav";
 import audOpen from "/src/assets/open.wav";
 import audComplete from "/src/assets/complete.wav";
 
+import level1 from "/src/assets/levels/1.png";
+import level2 from "/src/assets/levels/2.png";
+import level3 from "/src/assets/levels/3.png";
+import level4 from "/src/assets/levels/4.png";
+import level5 from "/src/assets/levels/5.png";
+
+const levels = [level1, level2, level3, level4, level5];
+let shuffledLevels = levels;
+
 function Game() {
 	const [video, setVideo] = useState("Loop");
 	const [startVisibility, setStartVisibility] = useState(true);
 	const [UIvisibility, setUIvisibility] = useState(true);
 	const [gameVisibility, setGameVisibility] = useState(false);
 	const [selectVisibility, setSelectVisibility] = useState(false);
+	const [levelImage, setLevelImage] = useState(
+		"https://dummyimage.com/1920x1080"
+	);
+	const [currentLevel, setCurrentLevel] = useState(0);
 
 	// Sounds
 	const audioSelect = new Audio(audSelect);
@@ -81,6 +94,7 @@ function Game() {
 
 	// Handle game start
 	function handleStartClick() {
+		generateLevels();
 		audioSelect.play();
 		setVideo("Process");
 		setStartVisibility(false);
@@ -127,6 +141,8 @@ function Game() {
 	}
 
 	function handleImgClick(e) {
+		nextLevel();
+
 		if (!selectVisibility) setSelectVisibility(true);
 		let { x, y, height } = e.target.getBoundingClientRect();
 		const areaX = e.clientX - x;
@@ -143,8 +159,8 @@ function Game() {
 		if (realX > 1877) realX = 1877;
 		if (realY > 1035) realY = 1035;
 
-    const coordX = realX / ratio + x;
-    const coordY = realY / ratio + y;
+		const coordX = realX / ratio + x;
+		const coordY = realY / ratio + y;
 
 		const header = document.querySelector("header");
 		const headerHeight = header.clientHeight;
@@ -159,6 +175,22 @@ function Game() {
 		if (selectVisibility) setSelectVisibility(false);
 	});
 
+	// Level logic
+	function generateLevels() {
+		shuffledLevels = levels
+			.map((value) => ({ value, sort: Math.random() }))
+			.sort((a, b) => a.sort - b.sort)
+			.map(({ value }) => value);
+
+		console.log(shuffledLevels);
+		nextLevel();
+	}
+
+	function nextLevel() {
+		setLevelImage(shuffledLevels[currentLevel]);
+		setCurrentLevel(currentLevel + 1);
+	}
+
 	return (
 		<main>
 			<Video videoState={video} key={video} />
@@ -172,7 +204,7 @@ function Game() {
 				</div>
 			</div>
 			<div className="game">
-				<img onClick={handleImgClick} src="https://dummyimage.com/1920x1080" />
+				<img onClick={handleImgClick} src={levelImage} />
 				<div className="select-area"></div>
 			</div>
 			<div className="game-bottom">
