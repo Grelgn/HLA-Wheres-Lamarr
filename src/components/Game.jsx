@@ -22,10 +22,11 @@ let shuffledLevels = levels;
 
 function Game() {
 	const [video, setVideo] = useState("Loop");
-	const [startVisibility, setStartVisibility] = useState(true);
+	const [startVisibility, setStartVisibility] = useState(false);
 	const [UIvisibility, setUIvisibility] = useState(true);
 	const [gameVisibility, setGameVisibility] = useState(false);
 	const [selectVisibility, setSelectVisibility] = useState(false);
+	const [gameEndVisibility, setGameEndVisibility] = useState(true);
 	const [levelImage, setLevelImage] = useState(
 		"https://dummyimage.com/1920x1080"
 	);
@@ -62,7 +63,7 @@ function Game() {
 		}
 	}, [startVisibility]);
 
-	//Show-Hide UI
+	//	Show-Hide UI
 	useEffect(() => {
 		const vis = document.querySelector(".game-top");
 		const vis2 = document.querySelector(".game-bottom");
@@ -75,7 +76,7 @@ function Game() {
 		}
 	}, [UIvisibility]);
 
-	//Show-Hide Game
+	//	Show-Hide Game
 	useEffect(() => {
 		const vis = document.querySelector(".game");
 		if (gameVisibility) {
@@ -85,7 +86,7 @@ function Game() {
 		}
 	}, [gameVisibility]);
 
-	//Show-Hide Select Area
+	//	Show-Hide Select Area
 	useEffect(() => {
 		const vis = document.querySelector(".select-area");
 		if (selectVisibility) {
@@ -94,6 +95,16 @@ function Game() {
 			vis.classList.add("invisible");
 		}
 	}, [selectVisibility]);
+
+	// Show-Hide Game End UI
+	useEffect(() => {
+		const vis = document.querySelector(".game-end");
+		if (gameEndVisibility) {
+			vis.classList.remove("invisible");
+		} else {
+			vis.classList.add("invisible");
+		}
+	}, [gameEndVisibility]);
 
 	// Button hover
 	function handleHover() {
@@ -202,7 +213,10 @@ function Game() {
 	}
 
 	function handleSubmit() {
-		console.log(levelsAPI);
+		if (currentLevel == levelsAPI.length) {
+			endGame();
+		}
+
 		const leeway = 35;
 		let level = shuffledLevels[currentLevel - 1];
 		level = level[level.length - 5];
@@ -227,6 +241,22 @@ function Game() {
 		} else console.log("False");
 	}
 
+	function endGame() {
+		setUIvisibility(false);
+		setGameVisibility(false);
+		setVideo("Process");
+		audioOpen.play();
+		setTimeout(() => {
+			audioStart.play();
+		}, 1000);
+		setTimeout(() => {
+			audioComplete.play();
+			setVideo("Loop");
+			setUIvisibility(true);
+			setGameEndVisibility(true);
+		}, 9000);
+	}
+
 	return (
 		<main>
 			<Video videoState={video} key={video} />
@@ -239,10 +269,57 @@ function Game() {
 					<img src={imgCombineLogo} />
 				</div>
 			</div>
+			<div className="start">
+				<h2>EXPOSE AND TAG ALL PARASITICS</h2>
+				<button onClick={handleStartClick} onMouseEnter={handleHover}>
+					START TRAINING
+				</button>
+			</div>
 			<div className="game">
 				<img onClick={handleImgClick} src={levelImage} />
 				<div className="select-area"></div>
-				<button onClick={handleSubmit}>Submit Selection</button>
+				<button onClick={handleSubmit} onMouseEnter={handleHover}>
+					Submit Selection
+				</button>
+			</div>
+			<div className="game-end">
+				<div className="submit-name">
+					<h2>YOUR TIME: 00:00</h2>
+					<h2>ENTER YOUR NAME</h2>
+					<input type="text" />
+					<button onMouseEnter={handleHover}>SUBMIT</button>
+				</div>
+				<div className="leaderboard">
+					<h2>LEADERBOARD</h2>
+					<table>
+						<thead>
+							<tr>
+								<th scope="col">NAME</th>
+								<th scope="col">TIME</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">ABC</th>
+								<td>11:11</td>
+							</tr>
+							<tr>
+								<th scope="row">ABC</th>
+								<td>11:11</td>
+							</tr>
+							<tr>
+								<th scope="row">ABC</th>
+								<td>11:11</td>
+							</tr>
+						</tbody>
+					</table>
+					{/* <ul>
+						<li>ABC - 11:11</li>
+						<li>DEF - 22:22</li>
+						<li>GHI - 33:33</li>
+						<li>JKL - 44:44</li>
+					</ul> */}
+				</div>
 			</div>
 			<div className="game-bottom">
 				<div className="bottom-left">
@@ -254,12 +331,6 @@ function Game() {
 						Full Screen
 					</button>
 				</div>
-			</div>
-			<div className="start">
-				<h2>EXPOSE AND TAG ALL PARASITICS</h2>
-				<button onClick={handleStartClick} onMouseEnter={handleHover}>
-					START TRAINING
-				</button>
 			</div>
 		</main>
 	);

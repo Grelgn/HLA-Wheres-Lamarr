@@ -149,20 +149,20 @@ video {
 }
 
 .start {
-	position: absolute;
-	top: 50%;
-	left: 50%;
 	display: grid;
-	transform: translateX(-50%) translateY(-60%);
+	justify-content: center;
 }
 
 .start h2,
-.start button {
+.start button,
+.game-end h2,
+.game-end button {
 	font-weight: 400;
 	font-size: 1.5rem;
 }
 
-button {
+button,
+input {
 	background-color: transparent;
 	border: 1px solid var(--combine-blue);
 	cursor: pointer;
@@ -175,10 +175,6 @@ button:hover {
 	background-color: var(--combine-hover);
 	border-color: var(--combine-hover);
 	color: var(--combine-hovertext);
-}
-
-.invisible {
-	visibility: hidden;
 }
 
 .game {
@@ -201,4 +197,41 @@ button:hover {
 	left: 0px;
 	top: 0px;
 	pointer-events: none;
+}
+
+.game-end {
+	display: grid;
+	grid-auto-flow: column;
+	justify-items: center;
+}
+
+.submit-name {
+	display: grid;
+	justify-items: center;
+}
+
+input {
+	margin-bottom: 25px;
+}
+
+input:focus {
+	outline: none;
+}
+
+.leaderboard {
+	/* width: 500px; */
+}
+
+.leaderboard h2 {
+	border-bottom: 1px solid var(--combine-dark);
+	padding: 10px;
+}
+
+.invisible {
+	display: none;
+}
+
+th,
+td {
+	padding: 10px;
 }
