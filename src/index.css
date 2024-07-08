@@ -182,7 +182,10 @@ button:hover {
 }
 
 .game {
-	overflow: hidden;
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: space-evenly;
+	align-items: center;
 }
 
 .game img {

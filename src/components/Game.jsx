@@ -30,6 +30,16 @@ function Game() {
 		"https://dummyimage.com/1920x1080"
 	);
 	const [currentLevel, setCurrentLevel] = useState(0);
+	const [selectedCoords, setSelectedCoords] = useState([0, 0]);
+	const [levelsAPI, setLevelsAPI] = useState([]);
+
+	// Fetch levels
+	useEffect(() => {
+		fetch("http://localhost:3000/levels")
+			.then((response) => response.json())
+			.then((json) => setLevelsAPI(json))
+			.catch((error) => console.error(error));
+	}, []);
 
 	// Sounds
 	const audioSelect = new Audio(audSelect);
@@ -141,8 +151,6 @@ function Game() {
 	}
 
 	function handleImgClick(e) {
-		nextLevel();
-
 		if (!selectVisibility) setSelectVisibility(true);
 		let { x, y, height } = e.target.getBoundingClientRect();
 		const areaX = e.clientX - x;
@@ -168,6 +176,8 @@ function Game() {
 		const selection = document.querySelector(".select-area");
 		selection.style.left = `calc(${coordX}px - 2.5vh)`;
 		selection.style.top = `calc(${coordY}px - 2.5vh - ${headerHeight}px)`;
+
+		setSelectedCoords([Math.round(realX), Math.round(realY)]);
 	}
 
 	// Prevent selected area to move uintentionally
@@ -191,6 +201,32 @@ function Game() {
 		setCurrentLevel(currentLevel + 1);
 	}
 
+	function handleSubmit() {
+		console.log(levelsAPI);
+		const leeway = 35;
+		let level = shuffledLevels[currentLevel - 1];
+		level = level[level.length - 5];
+
+		let solution = [];
+		for (let i = 0; i < levelsAPI.length; i++) {
+			const levelAPI = levelsAPI[i];
+			if (levelAPI.name == level) {
+				solution = levelAPI.solution;
+			}
+		}
+
+		if (
+			selectedCoords[0] < solution[0] + leeway &&
+			selectedCoords[0] > solution[0] - leeway &&
+			selectedCoords[1] < solution[1] + leeway &&
+			selectedCoords[1] > solution[1] - leeway
+		) {
+			console.log("Correct");
+			audioSelect.play();
+			nextLevel();
+		} else console.log("False");
+	}
+
 	return (
 		<main>
 			<Video videoState={video} key={video} />
@@ -206,6 +242,7 @@ function Game() {
 			<div className="game">
 				<img onClick={handleImgClick} src={levelImage} />
 				<div className="select-area"></div>
+				<button onClick={handleSubmit}>Submit Selection</button>
 			</div>
 			<div className="game-bottom">
 				<div className="bottom-left">
