@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import Video from "./Video";
+import Leaderboard from "./Leaderboard";
 
 import imgCombineLogo from "/src/assets/combine_logo.png";
 import imgBarcode from "/src/assets/barcode.png";
@@ -22,17 +23,19 @@ let shuffledLevels = levels;
 
 function Game() {
 	const [video, setVideo] = useState("Loop");
-	const [startVisibility, setStartVisibility] = useState(false);
+	const [startVisibility, setStartVisibility] = useState(true);
 	const [UIvisibility, setUIvisibility] = useState(true);
 	const [gameVisibility, setGameVisibility] = useState(false);
 	const [selectVisibility, setSelectVisibility] = useState(false);
-	const [gameEndVisibility, setGameEndVisibility] = useState(true);
+	const [gameEndVisibility, setGameEndVisibility] = useState(false);
 	const [levelImage, setLevelImage] = useState(
 		"https://dummyimage.com/1920x1080"
 	);
 	const [currentLevel, setCurrentLevel] = useState(0);
 	const [selectedCoords, setSelectedCoords] = useState([0, 0]);
 	const [levelsAPI, setLevelsAPI] = useState([]);
+	const [records, setRecords] = useState("");
+	const [leaderboard, setLeaderboard] = useState("");
 
 	// Fetch levels
 	useEffect(() => {
@@ -116,6 +119,7 @@ function Game() {
 	// Handle game start
 	function handleStartClick() {
 		generateLevels();
+		fetchRecords();
 		audioSelect.play();
 		setVideo("Process");
 		setStartVisibility(false);
@@ -242,6 +246,7 @@ function Game() {
 	}
 
 	function endGame() {
+		populateLeaderboard();
 		setUIvisibility(false);
 		setGameVisibility(false);
 		setVideo("Process");
@@ -255,6 +260,23 @@ function Game() {
 			setUIvisibility(true);
 			setGameEndVisibility(true);
 		}, 9000);
+	}
+
+	function fetchRecords() {
+		fetch("http://localhost:3000/records")
+			.then((response) => response.json())
+			.then((json) => setRecords(json))
+			.catch((error) => console.error(error));
+	}
+
+	function populateLeaderboard() {
+		setLeaderboard(records.filter((record) => {
+			return record.name !== undefined;
+		}));
+	}
+
+	function handleNameSubmit() {
+		populateLeaderboard();
 	}
 
 	return (
@@ -287,39 +309,11 @@ function Game() {
 					<h2>YOUR TIME: 00:00</h2>
 					<h2>ENTER YOUR NAME</h2>
 					<input type="text" />
-					<button onMouseEnter={handleHover}>SUBMIT</button>
+					<button onClick={handleNameSubmit} onMouseEnter={handleHover}>
+						SUBMIT
+					</button>
 				</div>
-				<div className="leaderboard">
-					<h2>LEADERBOARD</h2>
-					<table>
-						<thead>
-							<tr>
-								<th scope="col">NAME</th>
-								<th scope="col">TIME</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">ABC</th>
-								<td>11:11</td>
-							</tr>
-							<tr>
-								<th scope="row">ABC</th>
-								<td>11:11</td>
-							</tr>
-							<tr>
-								<th scope="row">ABC</th>
-								<td>11:11</td>
-							</tr>
-						</tbody>
-					</table>
-					{/* <ul>
-						<li>ABC - 11:11</li>
-						<li>DEF - 22:22</li>
-						<li>GHI - 33:33</li>
-						<li>JKL - 44:44</li>
-					</ul> */}
-				</div>
+				<Leaderboard leaderboard={leaderboard} key={leaderboard} />
 			</div>
 			<div className="game-bottom">
 				<div className="bottom-left">

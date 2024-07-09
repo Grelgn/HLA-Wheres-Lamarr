@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 import vidLoop from "/src/assets/Wupgrade_Loop.mp4";
 import vidProcess from "/src/assets/Wupgrade_Process.mp4";
 import tempBG from "/src/assets/temp_background.png";
@@ -15,12 +13,5 @@ function Video(props) {
 		</video>
 	);
 }
-
-Video.defaultProps = {
-	videoState: "Loop",
-};
-Video.propTypes = {
-	videoState: PropTypes.string,
-};
 
 export default Video;
