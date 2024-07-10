@@ -56,10 +56,8 @@ function Game() {
 		let hours = "0" + Math.floor(time / 1000 / 60 / 60);
 		let minutes = ("0" + (Math.floor(time / 1000 / 60) % 60)).slice(-2);
 		let seconds = ("0" + (Math.floor(time / 1000) % 60)).slice(-2);
-		if (hours !== "00") {
-			formatted += hours + ":";
-		}
-		formatted += minutes + ":" + seconds;
+		formatted += hours + minutes + seconds;
+		console.log(formatted);
 		setTimeFormatted(formatted);
 	}, [time]);
 
@@ -152,7 +150,6 @@ function Game() {
 		const audioStart = new Audio(audStart);
 		const audioOpen = new Audio(audOpen);
 		const audioComplete = new Audio(audComplete);
-
 		audioSelect.volume = 0.4;
 		audioStart.volume = 0.3;
 		audioOpen.volume = 0.3;
@@ -296,7 +293,6 @@ function Game() {
 		const audioStart = new Audio(audStart);
 		const audioOpen = new Audio(audOpen);
 		const audioComplete = new Audio(audComplete);
-
 		audioStart.volume = 0.3;
 		audioOpen.volume = 0.3;
 		audioComplete.volume = 0.4;
@@ -379,7 +375,18 @@ function Game() {
 							<p>CIVIL PROTECTION ANNEX 19-81572</p>
 						</div>
 						<div className="time">
-							YOUR TIME: <b>{timeFormatted}</b>
+							<div>YOUR TIME:</div>
+							<div className="timer">
+								{timeFormatted.slice(0, 2) !== "00" && (
+									<>
+										<div className="hours">{timeFormatted.slice(0, 2)}</div>
+										<div>:</div>
+									</>
+								)}
+								<div className="minutes">{timeFormatted.slice(-4, -2)}</div>
+								<div>:</div>
+								<div className="seconds">{timeFormatted.slice(-2)}</div>
+							</div>
 						</div>
 					</div>
 				</div>

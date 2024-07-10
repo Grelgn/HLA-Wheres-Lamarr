@@ -239,12 +239,21 @@ button:focus {
 	font-weight: 500;
 	border-bottom: 1px solid var(--combine-dark);
 	text-align: end;
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: end;
+	align-items: baseline;
 }
 
-.time b {
-	font-size: 3rem;
+.timer {
+	font-size: 3.5rem;
 	color: var(--combine-light-blue);
 	padding-left: 10px;
+	justify-content: end;
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-columns: repeat(auto-fit, 70px 20px 70px 20px 70px);
+	text-align: start;
 }
 
 .split {
