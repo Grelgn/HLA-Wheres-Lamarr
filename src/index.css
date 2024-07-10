@@ -1,6 +1,6 @@
 :root {
-	--combine-blue: hsl(189, 95%, 44%);
-	--combine-light-blue: hsl(180, 57%, 57%);
+	--combine-blue: hsl(189, 98%, 48%);
+	--combine-light-blue: hsl(175, 71%, 57%);
 	--combine-hover: hsl(194, 98%, 37%);
 	--combine-hovertext: hsl(188, 74%, 53%);
 	--combine-dark: hsl(192, 81%, 33%);
@@ -79,30 +79,30 @@ video {
 	position: absolute;
 	object-fit: fill;
 	z-index: -1;
-	border-left: 0.5vw solid var(--combine-blue);
+	border-left: 0.7vw solid var(--combine-blue);
 	box-sizing: border-box;
 }
 
-.game-bottom {
+.bottom-left {
 	position: relative;
 	display: grid;
 	grid-auto-flow: column;
-	justify-content: space-between;
-	align-items: end;
+	justify-content: start;
 	margin-bottom: 0.7vh;
-	margin-left: 1vw;
-	margin-right: 0.5vw;
+	margin-left: 1.4vw;
+	gap: 10px;
+	align-items: end;
+	grid-template-columns: auto 1fr;
 }
 
-.game-bottom img {
+.bottom-left img {
 	filter: brightness(140%);
 	width: 310px;
 	height: auto;
-	border-top: 1px solid var(--combine-dark);
 	padding-top: 5px;
 }
 
-.game-bottom p {
+.bottom-left p {
 	margin: 0;
 	position: absolute;
 	bottom: 0.5vh;
@@ -115,7 +115,7 @@ video {
 	display: grid;
 	grid-auto-flow: column;
 	justify-content: space-between;
-	margin-left: 1vw;
+	margin-left: 1.4vw;
 	margin-right: 0.5vw;
 }
 
@@ -180,13 +180,15 @@ button:hover {
 .game {
 	display: grid;
 	grid-auto-flow: column;
-	justify-content: space-evenly;
 	align-items: center;
 }
 
 .game img {
 	height: calc(100vh - 119px - 35px - 55px - 115px);
-	margin-left: 1vw;
+	margin-left: 1.4vw;
+	border-bottom: 1px solid var(--combine-dark);
+	padding-bottom: 5px;
+	padding-top: 3px;
 }
 
 .select-area {
@@ -218,20 +220,53 @@ input:focus {
 	outline: none;
 }
 
-.leaderboard {
-	/* width: 500px; */
-}
-
 .leaderboard h2 {
 	border-bottom: 1px solid var(--combine-dark);
 	padding: 10px;
 }
 
-.invisible {
-	display: none;
-}
-
 th,
 td {
 	padding: 10px;
+}
+
+button:focus {
+	outline: none;
+}
+
+.time {
+	font-size: 1.7rem;
+	font-weight: 500;
+	border-bottom: 1px solid var(--combine-dark);
+	text-align: end;
+}
+
+.time b {
+	font-size: 3rem;
+	color: var(--combine-light-blue);
+	padding-left: 10px;
+}
+
+.split {
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: space-between;
+}
+
+.right {
+	display: grid;
+	align-content: space-between;
+	justify-items: end;
+}
+
+.bottom-right {
+	padding: 10px;
+}
+
+.game-right {
+	padding: 10px;
+}
+
+.invisible {
+	display: none;
 }

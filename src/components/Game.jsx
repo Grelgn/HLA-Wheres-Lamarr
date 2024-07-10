@@ -28,9 +28,8 @@ function Game() {
 	const [gameVisibility, setGameVisibility] = useState(false);
 	const [selectVisibility, setSelectVisibility] = useState(false);
 	const [gameEndVisibility, setGameEndVisibility] = useState(false);
-	const [levelImage, setLevelImage] = useState(
-		"https://dummyimage.com/1920x1080"
-	);
+	const [timeVisibility, setTimeVisibility] = useState(false);
+	const [levelImage, setLevelImage] = useState("");
 	const [currentLevel, setCurrentLevel] = useState(0);
 	const [selectedCoords, setSelectedCoords] = useState([0, 0]);
 	const [levelsAPI, setLevelsAPI] = useState([]);
@@ -68,24 +67,28 @@ function Game() {
 
 	//	Show-Hide UI
 	useEffect(() => {
-		const vis = document.querySelector(".game-top");
-		const vis2 = document.querySelector(".game-bottom");
+		const vis = document.querySelectorAll(".ui");
 		if (UIvisibility) {
-			vis.classList.remove("invisible");
-			vis2.classList.remove("invisible");
+			vis.forEach((i) => {
+				i.classList.remove("invisible");
+			});
 		} else {
-			vis.classList.add("invisible");
-			vis2.classList.add("invisible");
+			vis.forEach((i) => {
+				i.classList.add("invisible");
+			});
 		}
 	}, [UIvisibility]);
 
 	//	Show-Hide Game
 	useEffect(() => {
 		const vis = document.querySelector(".game");
+		const vis2 = document.querySelector(".submit-selection");
 		if (gameVisibility) {
 			vis.classList.remove("invisible");
+			vis2.classList.remove("invisible");
 		} else {
 			vis.classList.add("invisible");
+			vis2.classList.add("invisible");
 		}
 	}, [gameVisibility]);
 
@@ -108,6 +111,16 @@ function Game() {
 			vis.classList.add("invisible");
 		}
 	}, [gameEndVisibility]);
+
+	// Show-Hide Time
+	useEffect(() => {
+		const vis = document.querySelector(".time");
+		if (timeVisibility) {
+			vis.classList.remove("invisible");
+		} else {
+			vis.classList.add("invisible");
+		}
+	}, [timeVisibility]);
 
 	// Button hover
 	function handleHover() {
@@ -133,6 +146,7 @@ function Game() {
 			setVideo("Loop");
 			setUIvisibility(true);
 			setGameVisibility(true);
+			setTimeVisibility(true);
 		}, 9000);
 	}
 
@@ -249,6 +263,7 @@ function Game() {
 		populateLeaderboard();
 		setUIvisibility(false);
 		setGameVisibility(false);
+		setTimeVisibility(false);
 		setVideo("Process");
 		audioOpen.play();
 		setTimeout(() => {
@@ -259,6 +274,7 @@ function Game() {
 			setVideo("Loop");
 			setUIvisibility(true);
 			setGameEndVisibility(true);
+			setTimeVisibility(true);
 		}, 9000);
 	}
 
@@ -270,9 +286,11 @@ function Game() {
 	}
 
 	function populateLeaderboard() {
-		setLeaderboard(records.filter((record) => {
-			return record.name !== undefined;
-		}));
+		setLeaderboard(
+			records.filter((record) => {
+				return record.name !== undefined;
+			})
+		);
 	}
 
 	function handleNameSubmit() {
@@ -282,7 +300,7 @@ function Game() {
 	return (
 		<main>
 			<Video videoState={video} key={video} />
-			<div className="game-top">
+			<div className="game-top ui">
 				<div className="top-left">
 					<b>ECHO-1-12-7</b>
 				</div>
@@ -297,13 +315,6 @@ function Game() {
 					START TRAINING
 				</button>
 			</div>
-			<div className="game">
-				<img onClick={handleImgClick} src={levelImage} />
-				<div className="select-area"></div>
-				<button onClick={handleSubmit} onMouseEnter={handleHover}>
-					Submit Selection
-				</button>
-			</div>
 			<div className="game-end">
 				<div className="submit-name">
 					<h2>YOUR TIME: 00:00</h2>
@@ -315,15 +326,37 @@ function Game() {
 				</div>
 				<Leaderboard leaderboard={leaderboard} key={leaderboard} />
 			</div>
-			<div className="game-bottom">
-				<div className="bottom-left">
-					<img src={imgBarcode} />
-					<p>CIVIL PROTECTION ANNEX 19-81572</p>
+			<div className="split">
+				<div className="left">
+					<div className="game">
+						<img onClick={handleImgClick} src={levelImage} />
+						<div className="select-area"></div>
+					</div>
+					<div className="bottom-left">
+						<div className="barcode ui">
+							<img src={imgBarcode} />
+							<p>CIVIL PROTECTION ANNEX 19-81572</p>
+						</div>
+						<div className="time">
+							YOUR TIME: <b>08:27</b>
+						</div>
+					</div>
 				</div>
-				<div className="bottom-right">
-					<button onClick={toggleFullscreen} onMouseEnter={handleHover}>
-						Full Screen
-					</button>
+				<div className="right">
+					<div className="game-right">
+						<button
+							className="submit-selection"
+							onClick={handleSubmit}
+							onMouseEnter={handleHover}
+						>
+							Submit Selection
+						</button>
+					</div>
+					<div className="bottom-right ui">
+						<button onClick={toggleFullscreen} onMouseEnter={handleHover}>
+							Full Screen
+						</button>
+					</div>
 				</div>
 			</div>
 		</main>
