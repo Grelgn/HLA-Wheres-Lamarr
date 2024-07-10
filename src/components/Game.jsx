@@ -35,6 +35,33 @@ function Game() {
 	const [levelsAPI, setLevelsAPI] = useState([]);
 	const [records, setRecords] = useState("");
 	const [leaderboard, setLeaderboard] = useState("");
+	const [time, setTime] = useState(0);
+	const [timeRunning, setTimeRunning] = useState(false);
+	const [timeFormatted, setTimeFormatted] = useState("");
+
+	// Timer
+	useEffect(() => {
+		let interval;
+		if (timeRunning) {
+			interval = setInterval(() => {
+				setTime((prevTime) => prevTime + 1000);
+			}, 1000);
+		} else {
+			clearInterval(interval);
+		}
+	}, [timeRunning]);
+
+	useEffect(() => {
+		let formatted = "";
+		let hours = "0" + Math.floor(time / 1000 / 60 / 60);
+		let minutes = ("0" + (Math.floor(time / 1000 / 60) % 60)).slice(-2);
+		let seconds = ("0" + (Math.floor(time / 1000) % 60)).slice(-2);
+		if (hours !== "00") {
+			formatted += hours + ":";
+		}
+		formatted += minutes + ":" + seconds;
+		setTimeFormatted(formatted);
+	}, [time]);
 
 	// Fetch levels
 	useEffect(() => {
@@ -43,17 +70,6 @@ function Game() {
 			.then((json) => setLevelsAPI(json))
 			.catch((error) => console.error(error));
 	}, []);
-
-	// Sounds
-	const audioSelect = new Audio(audSelect);
-	const audioStart = new Audio(audStart);
-	const audioOpen = new Audio(audOpen);
-	const audioComplete = new Audio(audComplete);
-
-	audioSelect.volume = 0.4;
-	audioStart.volume = 0.3;
-	audioOpen.volume = 0.3;
-	audioComplete.volume = 0.4;
 
 	// Show-Hide Start button
 	useEffect(() => {
@@ -129,8 +145,19 @@ function Game() {
 		audioHover.play();
 	}
 
-	// Handle game start
+	// Start Game
 	function handleStartClick() {
+		// Sounds
+		const audioSelect = new Audio(audSelect);
+		const audioStart = new Audio(audStart);
+		const audioOpen = new Audio(audOpen);
+		const audioComplete = new Audio(audComplete);
+
+		audioSelect.volume = 0.4;
+		audioStart.volume = 0.3;
+		audioOpen.volume = 0.3;
+		audioComplete.volume = 0.4;
+
 		generateLevels();
 		fetchRecords();
 		audioSelect.play();
@@ -147,6 +174,7 @@ function Game() {
 			setUIvisibility(true);
 			setGameVisibility(true);
 			setTimeVisibility(true);
+			setTimeRunning(true);
 		}, 9000);
 	}
 
@@ -231,6 +259,10 @@ function Game() {
 	}
 
 	function handleSubmit() {
+		// Sounds
+		const audioSelect = new Audio(audSelect);
+		audioSelect.volume = 0.4;
+
 		if (currentLevel == levelsAPI.length) {
 			endGame();
 		}
@@ -260,6 +292,15 @@ function Game() {
 	}
 
 	function endGame() {
+		// Sounds
+		const audioStart = new Audio(audStart);
+		const audioOpen = new Audio(audOpen);
+		const audioComplete = new Audio(audComplete);
+
+		audioStart.volume = 0.3;
+		audioOpen.volume = 0.3;
+		audioComplete.volume = 0.4;
+
 		populateLeaderboard();
 		setUIvisibility(false);
 		setGameVisibility(false);
@@ -338,7 +379,7 @@ function Game() {
 							<p>CIVIL PROTECTION ANNEX 19-81572</p>
 						</div>
 						<div className="time">
-							YOUR TIME: <b>08:27</b>
+							YOUR TIME: <b>{timeFormatted}</b>
 						</div>
 					</div>
 				</div>
