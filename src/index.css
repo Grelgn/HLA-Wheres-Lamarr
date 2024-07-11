@@ -4,6 +4,8 @@
 	--combine-hover: hsl(194, 98%, 37%);
 	--combine-hovertext: hsl(188, 74%, 53%);
 	--combine-dark: hsl(192, 81%, 33%);
+	--combine-blue-translucent: hsla(194, 96%, 18%, 0.356);
+	--combine-blue-darker: hsl(192, 87%, 44%);
 }
 
 body {
@@ -117,6 +119,7 @@ video {
 	justify-content: space-between;
 	margin-left: 1.4vw;
 	margin-right: 0.5vw;
+	/* margin-bottom: 10px; */
 }
 
 .top-right {
@@ -154,21 +157,20 @@ video {
 }
 
 .start h2,
-.start button,
-.game-end h2,
-.game-end button {
-	font-weight: 400;
-	font-size: 1.5rem;
+.game-end h2 {
+	font-weight: 500;
+	
 }
 
 button,
 input {
 	background-color: transparent;
-	border: 1px solid var(--combine-blue);
+	border: 2px solid var(--combine-blue);
 	cursor: pointer;
 	color: var(--combine-blue);
-	padding: 10px;
-	font-size: 1.2rem;
+	padding: 15px;
+	font-size: 1.5em;
+	font-weight: 500;
 }
 
 button:hover {
@@ -188,17 +190,17 @@ button:hover {
 	margin-left: 1.4vw;
 	border-bottom: 1px solid var(--combine-dark);
 	padding-bottom: 5px;
-	padding-top: 3px;
 }
 
 .select-area {
 	height: 5vh;
 	width: 5vh;
-	border: 1px solid var(--combine-dark);
+	border: 1px solid var(--combine-blue);
 	position: absolute;
 	left: 0px;
 	top: 0px;
 	pointer-events: none;
+	border-radius: 32px;
 }
 
 .game-end {
@@ -260,6 +262,7 @@ button:focus {
 	display: grid;
 	grid-auto-flow: column;
 	justify-content: space-between;
+	grid-template-columns: auto 1fr;
 }
 
 .right {
@@ -278,4 +281,17 @@ button:focus {
 
 .invisible {
 	display: none;
+}
+
+.not-selectable {
+	border: none;
+	padding: 17px;
+	background-color: var(--combine-blue-translucent);
+	cursor: default;
+	color: var(--combine-blue-darker);
+}
+
+.not-selectable:hover {
+	background-color: var(--combine-blue-translucent);
+	color: var(--combine-blue-darker);
 }

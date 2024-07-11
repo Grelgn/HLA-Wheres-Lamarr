@@ -38,6 +38,7 @@ function Game() {
 	const [time, setTime] = useState(0);
 	const [timeRunning, setTimeRunning] = useState(false);
 	const [timeFormatted, setTimeFormatted] = useState("");
+	const [isSubmittable, setIsSubmittable] = useState(false);
 
 	// Timer
 	useEffect(() => {
@@ -46,9 +47,10 @@ function Game() {
 			interval = setInterval(() => {
 				setTime((prevTime) => prevTime + 1000);
 			}, 1000);
-		} else {
+		} else if (!timeRunning) {
 			clearInterval(interval);
 		}
+		return () => clearInterval(interval);
 	}, [timeRunning]);
 
 	useEffect(() => {
@@ -137,11 +139,27 @@ function Game() {
 	}, [timeVisibility]);
 
 	// Button hover
-	function handleHover() {
-		const audioHover = new Audio(audHover);
-		audioHover.volume = 0.4;
-		audioHover.play();
+	function handleHover(e) {
+		if (e.target.classList.contains("not-selectable") == false) {
+			const audioHover = new Audio(audHover);
+			audioHover.volume = 0.4;
+			audioHover.play();
+		}
 	}
+
+	// Button submitable
+	useEffect(() => {
+		const buttons = document.querySelectorAll(".submittable");
+		if (isSubmittable) {
+			buttons.forEach((i) => {
+				i.classList.remove("not-selectable");
+			});
+		} else {
+			buttons.forEach((i) => {
+				i.classList.add("not-selectable");
+			});
+		}
+	}, [isSubmittable]);
 
 	// Start Game
 	function handleStartClick() {
@@ -232,11 +250,13 @@ function Game() {
 		selection.style.top = `calc(${coordY}px - 2.5vh - ${headerHeight}px)`;
 
 		setSelectedCoords([Math.round(realX), Math.round(realY)]);
+		setIsSubmittable(true);
 	}
 
 	// Prevent selected area to move uintentionally
 	window.addEventListener("resize", () => {
 		if (selectVisibility) setSelectVisibility(false);
+		setIsSubmittable(false);
 	});
 
 	// Level logic
@@ -285,7 +305,12 @@ function Game() {
 			console.log("Correct");
 			audioSelect.play();
 			nextLevel();
-		} else console.log("False");
+		} else {
+			console.log("False");
+		}
+
+		setSelectVisibility(false);
+		setIsSubmittable(false);
 	}
 
 	function endGame() {
@@ -297,6 +322,8 @@ function Game() {
 		audioOpen.volume = 0.3;
 		audioComplete.volume = 0.4;
 
+		setTimeRunning(false);
+		setIsSubmittable(false);
 		populateLeaderboard();
 		setUIvisibility(false);
 		setGameVisibility(false);
@@ -357,7 +384,11 @@ function Game() {
 					<h2>YOUR TIME: 00:00</h2>
 					<h2>ENTER YOUR NAME</h2>
 					<input type="text" />
-					<button onClick={handleNameSubmit} onMouseEnter={handleHover}>
+					<button
+						className="submittable"
+						onClick={handleNameSubmit}
+						onMouseEnter={handleHover}
+					>
 						SUBMIT
 					</button>
 				</div>
@@ -393,16 +424,16 @@ function Game() {
 				<div className="right">
 					<div className="game-right">
 						<button
-							className="submit-selection"
+							className="submit-selection submittable"
 							onClick={handleSubmit}
 							onMouseEnter={handleHover}
 						>
-							Submit Selection
+							SUBMIT SELECTION
 						</button>
 					</div>
 					<div className="bottom-right ui">
 						<button onClick={toggleFullscreen} onMouseEnter={handleHover}>
-							Full Screen
+							FULL SCREEN
 						</button>
 					</div>
 				</div>
