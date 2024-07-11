@@ -195,7 +195,9 @@ function Game() {
 
 	function toggleFullscreen(event) {
 		// var element = document.querySelector("main");
-		var element = document.body;
+		// var element = document.querySelector("#root");
+		// var element = document.body;
+		var element = document.documentElement;
 
 		if (event instanceof HTMLElement) {
 			element = event;
@@ -381,7 +383,6 @@ function Game() {
 			</div>
 			<div className="game-end">
 				<div className="submit-name">
-					<h2>YOUR TIME: 00:00</h2>
 					<h2>ENTER YOUR NAME</h2>
 					<input type="text" />
 					<button

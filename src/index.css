@@ -31,11 +31,15 @@ header {
 	gap: 60px;
 }
 
+header img {
+	height: 60px;
+}
+
 header h1 {
-	font-size: 4.1rem;
+	font-size: 3.1em;
 	font-weight: 100;
 	margin: 0;
-	margin-top: 20px;
+	margin-top: 17px;
 	letter-spacing: 25px;
 }
 
@@ -171,6 +175,7 @@ input {
 	padding: 15px;
 	font-size: 1.5em;
 	font-weight: 500;
+	font-family: "Exo 2", sans-serif;
 }
 
 button:hover {
@@ -200,7 +205,7 @@ button:hover {
 	left: 0px;
 	top: 0px;
 	pointer-events: none;
-	border-radius: 32px;
+	border-radius: 64px;
 }
 
 .game-end {
@@ -245,6 +250,7 @@ button:focus {
 	grid-auto-flow: column;
 	justify-content: end;
 	align-items: baseline;
+	/* min-width: 680px; */
 }
 
 .timer {
@@ -294,4 +300,18 @@ button:focus {
 .not-selectable:hover {
 	background-color: var(--combine-blue-translucent);
 	color: var(--combine-blue-darker);
+}
+
+@media (max-height: 800px) {
+	header, footer {
+		display: none;
+	}
+
+	#root {
+		grid-template-rows: 1fr;
+	}
+
+	.game img {
+		height: calc(100vh - 55px - 115px);
+	}
 }
