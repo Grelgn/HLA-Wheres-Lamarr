@@ -74,7 +74,6 @@ footer i {
 main {
 	position: relative;
 	display: grid;
-	/* align-content: space-between; */
 	color: var(--combine-blue);
 	grid-template-rows: auto 1fr;
 }
@@ -124,7 +123,6 @@ video {
 	justify-content: space-between;
 	margin-left: 1.4vw;
 	margin-right: 0.5vw;
-	/* margin-bottom: 10px; */
 }
 
 .top-right {
@@ -227,6 +225,8 @@ input:focus {
 .leaderboard {
 	display: grid;
 	width: 400px;
+	position: absolute;
+	right: 10px;
 }
 
 .leaderboard h2 {
@@ -259,7 +259,6 @@ button:focus {
 	grid-auto-flow: column;
 	justify-content: end;
 	align-items: baseline;
-	/* min-width: 680px; */
 }
 
 .timer {
@@ -276,8 +275,7 @@ button:focus {
 .split {
 	display: grid;
 	grid-auto-flow: column;
-	justify-content: space-between;
-	/* grid-template-columns: auto 1fr ; */
+	justify-content: start;
 }
 
 .right {
@@ -296,14 +294,14 @@ button:focus {
 }
 
 .not-selectable {
-	border: none;
-	padding: 17px;
+	border: 2px solid var(--combine-blue-translucent);
 	background-color: var(--combine-blue-translucent);
 	cursor: default;
 	color: var(--combine-blue-darker);
 }
 
 .not-selectable:hover {
+	border: 2px solid var(--combine-blue-translucent);
 	background-color: var(--combine-blue-translucent);
 	color: var(--combine-blue-darker);
 }
@@ -314,7 +312,14 @@ button:focus {
 
 .submit-selection {
 	font-size: 2em;
-	padding: 25px;
+	padding: 0.7em;
+}
+
+.fullscreen {
+	padding-bottom: 10px;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
 }
 
 .invisible {
@@ -322,7 +327,8 @@ button:focus {
 }
 
 @media (max-height: 800px) {
-	header, footer {
+	header,
+	footer {
 		display: none;
 	}
 

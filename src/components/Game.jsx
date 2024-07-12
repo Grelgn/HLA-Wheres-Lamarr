@@ -124,11 +124,21 @@ function Game() {
 		if (gameEndVisibility) {
 			vis.forEach((i) => {
 				i.classList.remove("invisible");
-			})
+			});
+
+			// Make button submittable on > 3 characters
+			const input = document.querySelector("input");
+			input.addEventListener("keyup", (e) => {
+				if (e.target.value.length >= 3) {
+					setIsSubmittable(true);
+				} else if (e.target.value.length < 3) {
+					setIsSubmittable(false);
+				}
+			});
 		} else {
 			vis.forEach((i) => {
 				i.classList.add("invisible");
-			})
+			});
 		}
 	}, [gameEndVisibility]);
 
@@ -394,7 +404,7 @@ function Game() {
 					<div className="game-end">
 						<div className="submit-name">
 							<h2>ENTER YOUR NAME</h2>
-							<input type="text" />
+							<input type="text" maxLength={18} spellCheck={false} />
 							<button
 								className="submittable"
 								onClick={handleNameSubmit}
@@ -437,8 +447,12 @@ function Game() {
 						<Leaderboard leaderboard={leaderboard} key={leaderboard} />
 					</div>
 					<div className="bottom-right ui">
-						<button onClick={toggleFullscreen} onMouseEnter={handleHover}>
-							FULL SCREEN
+						<button
+							className="fullscreen"
+							onClick={toggleFullscreen}
+							onMouseEnter={handleHover}
+						>
+							<span className="material-symbols-outlined">fullscreen</span>
 						</button>
 					</div>
 				</div>
