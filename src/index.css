@@ -262,13 +262,13 @@ button:focus {
 }
 
 .timer {
-	font-size: 3.5rem;
+	font-size: 4rem;
 	color: var(--combine-light-blue);
 	padding-left: 10px;
 	justify-content: end;
 	display: grid;
 	grid-auto-flow: column;
-	grid-template-columns: repeat(auto-fit, 70px 20px 70px 20px 70px);
+	grid-template-columns: repeat(auto-fit, 80px 20px 80px 20px 80px);
 	text-align: start;
 }
 

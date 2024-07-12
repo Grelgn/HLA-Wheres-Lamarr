@@ -39,6 +39,7 @@ function Game() {
 	const [timeRunning, setTimeRunning] = useState(false);
 	const [timeFormatted, setTimeFormatted] = useState("");
 	const [isSubmittable, setIsSubmittable] = useState(false);
+	const [nameSubmittable, setNameSubmittable] = useState(false);
 
 	// Timer
 	useEffect(() => {
@@ -128,11 +129,11 @@ function Game() {
 
 			// Make button submittable on > 3 characters
 			const input = document.querySelector("input");
-			input.addEventListener("keyup", (e) => {
+			input.addEventListener("keydown", (e) => {
 				if (e.target.value.length >= 3) {
-					setIsSubmittable(true);
+					setNameSubmittable(true);
 				} else if (e.target.value.length < 3) {
-					setIsSubmittable(false);
+					setNameSubmittable(false);
 				}
 			});
 		} else {
@@ -161,19 +162,29 @@ function Game() {
 		}
 	}
 
-	// Button submitable
+	// Button submittable
 	useEffect(() => {
-		const buttons = document.querySelectorAll(".submittable");
+		const button = document.querySelector(".submit-selection");
 		if (isSubmittable) {
-			buttons.forEach((i) => {
-				i.classList.remove("not-selectable");
-			});
-		} else {
-			buttons.forEach((i) => {
-				i.classList.add("not-selectable");
-			});
+			button.classList.remove("not-selectable");
+			button.disabled = false;
+		} else if (!isSubmittable) {
+			button.classList.add("not-selectable");
+			button.disabled = true;
 		}
 	}, [isSubmittable]);
+
+	// Name submittable
+	useEffect(() => {
+		const button = document.querySelector(".submit-name > button");
+		if (nameSubmittable) {
+			button.classList.remove("not-selectable");
+			button.disabled = false;
+		} else if (!nameSubmittable) {
+			button.classList.add("not-selectable");
+			button.disabled = true;
+		}
+	}, [nameSubmittable]);
 
 	// Start Game
 	function handleStartClick() {
@@ -339,7 +350,6 @@ function Game() {
 		audioComplete.volume = 0.4;
 
 		setTimeRunning(false);
-		setIsSubmittable(false);
 		setUIvisibility(false);
 		setGameVisibility(false);
 		setTimeVisibility(false);
