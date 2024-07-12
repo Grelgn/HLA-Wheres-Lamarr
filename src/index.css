@@ -74,8 +74,9 @@ footer i {
 main {
 	position: relative;
 	display: grid;
-	align-content: space-between;
+	/* align-content: space-between; */
 	color: var(--combine-blue);
+	grid-template-rows: auto 1fr;
 }
 
 video {
@@ -158,12 +159,11 @@ video {
 .start {
 	display: grid;
 	justify-content: center;
+	align-content: center;
 }
 
-.start h2,
-.game-end h2 {
+h2 {
 	font-weight: 500;
-	
 }
 
 button,
@@ -195,6 +195,7 @@ button:hover {
 	margin-left: 1.4vw;
 	border-bottom: 1px solid var(--combine-dark);
 	padding-bottom: 5px;
+	cursor: pointer;
 }
 
 .select-area {
@@ -208,15 +209,11 @@ button:hover {
 	border-radius: 64px;
 }
 
-.game-end {
-	display: grid;
-	grid-auto-flow: column;
-	justify-items: center;
-}
-
 .submit-name {
 	display: grid;
 	justify-items: center;
+	padding-top: calc(50vh - 55px - 110px - 97px);
+	padding-left: calc(50vw - 165px);
 }
 
 input {
@@ -227,14 +224,26 @@ input:focus {
 	outline: none;
 }
 
+.leaderboard {
+	display: grid;
+	width: 400px;
+}
+
 .leaderboard h2 {
 	border-bottom: 1px solid var(--combine-dark);
 	padding: 10px;
+	color: var(--combine-light-blue);
 }
 
 th,
 td {
 	padding: 10px;
+	text-align: end;
+	font-size: 1.1em;
+}
+
+th {
+	color: var(--combine-light-blue);
 }
 
 button:focus {
@@ -268,7 +277,7 @@ button:focus {
 	display: grid;
 	grid-auto-flow: column;
 	justify-content: space-between;
-	grid-template-columns: auto 1fr;
+	/* grid-template-columns: auto 1fr ; */
 }
 
 .right {
@@ -283,10 +292,7 @@ button:focus {
 
 .game-right {
 	padding: 10px;
-}
-
-.invisible {
-	display: none;
+	display: grid;
 }
 
 .not-selectable {
@@ -302,6 +308,19 @@ button:focus {
 	color: var(--combine-blue-darker);
 }
 
+.left {
+	display: grid;
+}
+
+.submit-selection {
+	font-size: 2em;
+	padding: 25px;
+}
+
+.invisible {
+	display: none;
+}
+
 @media (max-height: 800px) {
 	header, footer {
 		display: none;
@@ -313,5 +332,9 @@ button:focus {
 
 	.game img {
 		height: calc(100vh - 55px - 115px);
+	}
+
+	.submit-name {
+		padding-top: calc(50vh - 55px - 110px);
 	}
 }

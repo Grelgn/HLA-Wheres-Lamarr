@@ -1,6 +1,6 @@
 function Leaderboard(props) {
 	return (
-		<div className="leaderboard">
+		<div className="leaderboard game-end">
 			<h2>LEADERBOARD</h2>
 			<table>
 				<thead>
@@ -15,7 +15,7 @@ function Leaderboard(props) {
 						for (let i = 0; i < props.leaderboard.length; i++) {
 							arr.push(
 								<tr key={i}>
-									<th scope="row">{props.leaderboard[i].name}</th>
+									<td>{props.leaderboard[i].name}</td>
 									<td>{props.leaderboard[i].time}</td>
 								</tr>
 							);

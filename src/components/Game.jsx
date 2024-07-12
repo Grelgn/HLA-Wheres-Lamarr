@@ -120,11 +120,15 @@ function Game() {
 
 	// Show-Hide Game End UI
 	useEffect(() => {
-		const vis = document.querySelector(".game-end");
+		const vis = document.querySelectorAll(".game-end");
 		if (gameEndVisibility) {
-			vis.classList.remove("invisible");
+			vis.forEach((i) => {
+				i.classList.remove("invisible");
+			})
 		} else {
-			vis.classList.add("invisible");
+			vis.forEach((i) => {
+				i.classList.add("invisible");
+			})
 		}
 	}, [gameEndVisibility]);
 
@@ -326,7 +330,6 @@ function Game() {
 
 		setTimeRunning(false);
 		setIsSubmittable(false);
-		populateLeaderboard();
 		setUIvisibility(false);
 		setGameVisibility(false);
 		setTimeVisibility(false);
@@ -339,6 +342,7 @@ function Game() {
 			audioComplete.play();
 			setVideo("Loop");
 			setUIvisibility(true);
+			populateLeaderboard();
 			setGameEndVisibility(true);
 			setTimeVisibility(true);
 		}, 9000);
@@ -381,25 +385,24 @@ function Game() {
 					START TRAINING
 				</button>
 			</div>
-			<div className="game-end">
-				<div className="submit-name">
-					<h2>ENTER YOUR NAME</h2>
-					<input type="text" />
-					<button
-						className="submittable"
-						onClick={handleNameSubmit}
-						onMouseEnter={handleHover}
-					>
-						SUBMIT
-					</button>
-				</div>
-				<Leaderboard leaderboard={leaderboard} key={leaderboard} />
-			</div>
 			<div className="split">
 				<div className="left">
 					<div className="game">
 						<img onClick={handleImgClick} src={levelImage} />
 						<div className="select-area"></div>
+					</div>
+					<div className="game-end">
+						<div className="submit-name">
+							<h2>ENTER YOUR NAME</h2>
+							<input type="text" />
+							<button
+								className="submittable"
+								onClick={handleNameSubmit}
+								onMouseEnter={handleHover}
+							>
+								SUBMIT
+							</button>
+						</div>
 					</div>
 					<div className="bottom-left">
 						<div className="barcode ui">
@@ -431,6 +434,7 @@ function Game() {
 						>
 							SUBMIT SELECTION
 						</button>
+						<Leaderboard leaderboard={leaderboard} key={leaderboard} />
 					</div>
 					<div className="bottom-right ui">
 						<button onClick={toggleFullscreen} onMouseEnter={handleHover}>
