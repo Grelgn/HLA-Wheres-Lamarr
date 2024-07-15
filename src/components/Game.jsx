@@ -40,6 +40,7 @@ function Game() {
 	const [timeFormatted, setTimeFormatted] = useState("");
 	const [isSubmittable, setIsSubmittable] = useState(false);
 	const [nameSubmittable, setNameSubmittable] = useState(false);
+	const [nameSubmitted, setNameSubmitted] = useState(false);
 
 	// Timer
 	useEffect(() => {
@@ -129,7 +130,7 @@ function Game() {
 
 			// Make button submittable on > 3 characters
 			const input = document.querySelector("input");
-			input.addEventListener("keydown", (e) => {
+			input.addEventListener("keyup", (e) => {
 				if (e.target.value.length >= 3) {
 					setNameSubmittable(true);
 				} else if (e.target.value.length < 3) {
@@ -384,7 +385,15 @@ function Game() {
 	}
 
 	function handleNameSubmit() {
-		populateLeaderboard();
+		const div = document.querySelector(".submit-name");
+		div.classList.add("submitted-name");
+		// populateLeaderboard();
+		console.log("name submitted");
+		setNameSubmitted(true);
+	}
+
+	function restartGame() {
+		window.location.reload();
 	}
 
 	return (
@@ -413,15 +422,28 @@ function Game() {
 					</div>
 					<div className="game-end">
 						<div className="submit-name">
-							<h2>ENTER YOUR NAME</h2>
-							<input type="text" maxLength={18} spellCheck={false} />
-							<button
-								className="submittable"
-								onClick={handleNameSubmit}
-								onMouseEnter={handleHover}
-							>
-								SUBMIT
-							</button>
+							{nameSubmitted
+								? 
+								<>
+									<h2>RECORD SUBMITTED</h2>
+									<button onClick={restartGame}>
+										RESTART
+									</button>
+								</>
+								:	
+								<>
+									<h2>ENTER YOUR NAME</h2>
+									<input type="text" maxLength={18} spellCheck={false} />
+									<button
+										className="submittable"
+										onClick={handleNameSubmit}
+										onMouseEnter={handleHover}
+									>
+										SUBMIT
+									</button>
+								</>
+							}
+							
 						</div>
 					</div>
 					<div className="bottom-left">

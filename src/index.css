@@ -212,6 +212,11 @@ button:hover {
 	justify-items: center;
 	padding-top: calc(50vh - 55px - 110px - 97px);
 	padding-left: calc(50vw - 165px);
+	width: 350px;
+}
+
+.submitted-name {
+	padding-top: calc(50vh - 55px - 65px - 97px);
 }
 
 input {
@@ -342,5 +347,9 @@ button:focus {
 
 	.submit-name {
 		padding-top: calc(50vh - 55px - 110px);
+	}
+
+	.submitted-name {
+		padding-top: calc(50vh - 55px - 65px);
 	}
 }
