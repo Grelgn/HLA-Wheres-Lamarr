@@ -331,6 +331,10 @@ button:focus {
 	display: none;
 }
 
+.hidden {
+	visibility: hidden;
+}
+
 @media (max-height: 800px) {
 	header,
 	footer {

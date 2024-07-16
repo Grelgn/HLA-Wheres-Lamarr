@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Video from "./Video";
 import Leaderboard from "./Leaderboard";
@@ -73,87 +73,6 @@ function Game() {
 			.catch((error) => console.error(error));
 	}, []);
 
-	// Show-Hide Start button
-	useEffect(() => {
-		const start = document.querySelector(".start");
-		if (startVisibility) {
-			start.classList.remove("invisible");
-		} else {
-			start.classList.add("invisible");
-		}
-	}, [startVisibility]);
-
-	//	Show-Hide UI
-	useEffect(() => {
-		const vis = document.querySelectorAll(".ui");
-		if (UIvisibility) {
-			vis.forEach((i) => {
-				i.classList.remove("invisible");
-			});
-		} else {
-			vis.forEach((i) => {
-				i.classList.add("invisible");
-			});
-		}
-	}, [UIvisibility]);
-
-	//	Show-Hide Game
-	useEffect(() => {
-		const vis = document.querySelector(".game");
-		const vis2 = document.querySelector(".submit-selection");
-		if (gameVisibility) {
-			vis.classList.remove("invisible");
-			vis2.classList.remove("invisible");
-		} else {
-			vis.classList.add("invisible");
-			vis2.classList.add("invisible");
-		}
-	}, [gameVisibility]);
-
-	//	Show-Hide Select Area
-	useEffect(() => {
-		const vis = document.querySelector(".select-area");
-		if (selectVisibility) {
-			vis.classList.remove("invisible");
-		} else {
-			vis.classList.add("invisible");
-		}
-	}, [selectVisibility]);
-
-	// Show-Hide Game End UI
-	useEffect(() => {
-		const vis = document.querySelectorAll(".game-end");
-		if (gameEndVisibility) {
-			vis.forEach((i) => {
-				i.classList.remove("invisible");
-			});
-
-			// Make button submittable on > 3 characters
-			const input = document.querySelector("input");
-			input.addEventListener("keyup", (e) => {
-				if (e.target.value.length >= 3) {
-					setNameSubmittable(true);
-				} else if (e.target.value.length < 3) {
-					setNameSubmittable(false);
-				}
-			});
-		} else {
-			vis.forEach((i) => {
-				i.classList.add("invisible");
-			});
-		}
-	}, [gameEndVisibility]);
-
-	// Show-Hide Time
-	useEffect(() => {
-		const vis = document.querySelector(".time");
-		if (timeVisibility) {
-			vis.classList.remove("invisible");
-		} else {
-			vis.classList.add("invisible");
-		}
-	}, [timeVisibility]);
-
 	// Button hover
 	function handleHover(e) {
 		if (e.target.classList.contains("not-selectable") == false) {
@@ -163,33 +82,17 @@ function Game() {
 		}
 	}
 
-	// Button submittable
-	useEffect(() => {
-		const button = document.querySelector(".submit-selection");
-		if (isSubmittable) {
-			button.classList.remove("not-selectable");
-			button.disabled = false;
-		} else if (!isSubmittable) {
-			button.classList.add("not-selectable");
-			button.disabled = true;
+	// Make button submittable on > 3 characters
+	function validateName(e) {
+		if (e.target.value.length >= 3) {
+			setNameSubmittable(true);
+		} else if (e.target.value.length < 3) {
+			setNameSubmittable(false);
 		}
-	}, [isSubmittable]);
-
-	// Name submittable
-	useEffect(() => {
-		const button = document.querySelector(".submit-name > button");
-		if (nameSubmittable) {
-			button.classList.remove("not-selectable");
-			button.disabled = false;
-		} else if (!nameSubmittable) {
-			button.classList.add("not-selectable");
-			button.disabled = true;
-		}
-	}, [nameSubmittable]);
+	}
 
 	// Start Game
 	function handleStartClick() {
-		// Sounds
 		const audioSelect = new Audio(audSelect);
 		const audioStart = new Audio(audStart);
 		const audioOpen = new Audio(audOpen);
@@ -221,8 +124,6 @@ function Game() {
 
 	function toggleFullscreen(event) {
 		// var element = document.querySelector("main");
-		// var element = document.querySelector("#root");
-		// var element = document.body;
 		var element = document.documentElement;
 
 		if (event instanceof HTMLElement) {
@@ -304,7 +205,6 @@ function Game() {
 	}
 
 	function handleSubmit() {
-		// Sounds
 		const audioSelect = new Audio(audSelect);
 		audioSelect.volume = 0.4;
 
@@ -342,7 +242,6 @@ function Game() {
 	}
 
 	function endGame() {
-		// Sounds
 		const audioStart = new Audio(audStart);
 		const audioOpen = new Audio(audOpen);
 		const audioComplete = new Audio(audComplete);
@@ -387,7 +286,6 @@ function Game() {
 	function handleNameSubmit() {
 		const div = document.querySelector(".submit-name");
 		div.classList.add("submitted-name");
-		// populateLeaderboard();
 		console.log("name submitted");
 		setNameSubmitted(true);
 	}
@@ -399,94 +297,124 @@ function Game() {
 	return (
 		<main>
 			<Video videoState={video} key={video} />
-			<div className="game-top ui">
-				<div className="top-left">
-					<b>ECHO-1-12-7</b>
+			{UIvisibility && (
+				<div className="game-top ui">
+					<div className="top-left">
+						<b>ECHO-1-12-7</b>
+					</div>
+					<div className="top-right">
+						<p>PARASITIC VISCON TRAINING STATION 0.3.3.333</p>
+						<img src={imgCombineLogo} />
+					</div>
 				</div>
-				<div className="top-right">
-					<p>PARASITIC VISCON TRAINING STATION 0.3.3.333</p>
-					<img src={imgCombineLogo} />
+			)}
+			{startVisibility && (
+				<div className="start">
+					<h2>EXPOSE AND TAG ALL PARASITICS</h2>
+					<button onClick={handleStartClick} onMouseEnter={handleHover}>
+						START TRAINING
+					</button>
 				</div>
-			</div>
-			<div className="start">
-				<h2>EXPOSE AND TAG ALL PARASITICS</h2>
-				<button onClick={handleStartClick} onMouseEnter={handleHover}>
-					START TRAINING
-				</button>
-			</div>
+			)}
 			<div className="split">
 				<div className="left">
-					<div className="game">
-						<img onClick={handleImgClick} src={levelImage} />
-						<div className="select-area"></div>
-					</div>
-					<div className="game-end">
-						<div className="submit-name">
-							{nameSubmitted
-								? 
-								<>
-									<h2>RECORD SUBMITTED</h2>
-									<button onClick={restartGame}>
-										RESTART
-									</button>
-								</>
-								:	
-								<>
-									<h2>ENTER YOUR NAME</h2>
-									<input type="text" maxLength={18} spellCheck={false} />
-									<button
-										className="submittable"
-										onClick={handleNameSubmit}
-										onMouseEnter={handleHover}
-									>
-										SUBMIT
-									</button>
-								</>
-							}
-							
+					{gameVisibility && (
+						<div className="game">
+							<img onClick={handleImgClick} src={levelImage} />
+							<div
+								className={
+									"select-area " + (selectVisibility ? null : "hidden")
+								}
+							></div>
 						</div>
-					</div>
-					<div className="bottom-left">
-						<div className="barcode ui">
-							<img src={imgBarcode} />
-							<p>CIVIL PROTECTION ANNEX 19-81572</p>
-						</div>
-						<div className="time">
-							<div>YOUR TIME:</div>
-							<div className="timer">
-								{timeFormatted.slice(0, 2) !== "00" && (
+					)}
+					{gameEndVisibility && (
+						<div className="game-end">
+							<div className="submit-name">
+								{nameSubmitted ? (
 									<>
-										<div className="hours">{timeFormatted.slice(0, 2)}</div>
-										<div>:</div>
+										<h2>RECORD SUBMITTED</h2>
+										<button onClick={restartGame}>RESTART</button>
+									</>
+								) : (
+									<>
+										<h2>ENTER YOUR NAME</h2>
+										<input
+											onChange={validateName}
+											type="text"
+											maxLength={18}
+											spellCheck={false}
+										/>
+										<button
+											className={nameSubmittable ? null : "not-selectable"}
+											disabled={nameSubmittable ? false : true}
+											onClick={handleNameSubmit}
+											onMouseEnter={handleHover}
+										>
+											SUBMIT
+										</button>
 									</>
 								)}
-								<div className="minutes">{timeFormatted.slice(-4, -2)}</div>
-								<div>:</div>
-								<div className="seconds">{timeFormatted.slice(-2)}</div>
 							</div>
 						</div>
+					)}
+					<div className="bottom-left">
+						{UIvisibility && (
+							<div className="barcode ui">
+								<img src={imgBarcode} />
+								<p>CIVIL PROTECTION ANNEX 19-81572</p>
+							</div>
+						)}
+						{timeVisibility && (
+							<div className="time">
+								<div>YOUR TIME:</div>
+								<div className="timer">
+									{timeFormatted.slice(0, 2) !== "00" && (
+										<>
+											<div className="hours">{timeFormatted.slice(0, 2)}</div>
+											<div>:</div>
+										</>
+									)}
+									<div className="minutes">{timeFormatted.slice(-4, -2)}</div>
+									<div>:</div>
+									<div className="seconds">{timeFormatted.slice(-2)}</div>
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 				<div className="right">
 					<div className="game-right">
-						<button
-							className="submit-selection submittable"
-							onClick={handleSubmit}
-							onMouseEnter={handleHover}
-						>
-							SUBMIT SELECTION
-						</button>
-						<Leaderboard leaderboard={leaderboard} key={leaderboard} />
+						{gameVisibility && (
+							<button
+								className={
+									"submit-selection submittable " +
+									(isSubmittable ? null : "not-selectable")
+								}
+								disabled={isSubmittable ? false : true}
+								onClick={handleSubmit}
+								onMouseEnter={handleHover}
+							>
+								SUBMIT SELECTION
+							</button>
+						)}
+						<Leaderboard
+							gameEndVisibility={gameEndVisibility}
+							leaderboard={leaderboard}
+							key={leaderboard}
+						/>
 					</div>
-					<div className="bottom-right ui">
-						<button
-							className="fullscreen"
-							onClick={toggleFullscreen}
-							onMouseEnter={handleHover}
-						>
-							<span className="material-symbols-outlined">fullscreen</span>
-						</button>
-					</div>
+					{UIvisibility && (
+						<div className="bottom-right ui">
+							<button
+								className="fullscreen"
+								onClick={toggleFullscreen}
+								onMouseEnter={handleHover}
+							>
+								<span className="material-symbols-outlined">fullscreen</span>
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</main>
