@@ -14,13 +14,15 @@ import audOpen from "/src/assets/audio/chamber_open.wav";
 import audComplete from "/src/assets/audio/work_complete.wav";
 import audOpen2 from "/src/assets/audio/upgrader_open.wav";
 
+import level0 from "/src/assets/levels/0.png";
 import level1 from "/src/assets/levels/1.png";
 import level2 from "/src/assets/levels/2.png";
 import level3 from "/src/assets/levels/3.png";
 import level4 from "/src/assets/levels/4.png";
-import level5 from "/src/assets/levels/5.png";
 
-const levels = [level1, level2, level3, level4, level5];
+import levelsJSON from "/levels.json";
+
+const levels = [level0, level1, level2, level3, level4];
 let shuffledLevels = levels;
 
 function Game() {
@@ -34,7 +36,7 @@ function Game() {
 	const [levelImage, setLevelImage] = useState("");
 	const [currentLevel, setCurrentLevel] = useState(0);
 	const [selectedCoords, setSelectedCoords] = useState([0, 0]);
-	const [levelsAPI, setLevelsAPI] = useState([]);
+	const [levelList] = useState(levelsJSON);
 	const [records, setRecords] = useState("");
 	const [leaderboard, setLeaderboard] = useState("");
 	const [time, setTime] = useState(0);
@@ -63,17 +65,8 @@ function Game() {
 		let minutes = ("0" + (Math.floor(time / 1000 / 60) % 60)).slice(-2);
 		let seconds = ("0" + (Math.floor(time / 1000) % 60)).slice(-2);
 		formatted += hours + minutes + seconds;
-		console.log(formatted);
 		setTimeFormatted(formatted);
 	}, [time]);
-
-	// Fetch levels
-	useEffect(() => {
-		fetch("http://localhost:3000/levels")
-			.then((response) => response.json())
-			.then((json) => setLevelsAPI(json))
-			.catch((error) => console.error(error));
-	}, []);
 
 	// Button hover
 	function handleHover(e) {
@@ -158,8 +151,8 @@ function Game() {
 		const ratio = 1080 / height;
 		let realX = areaX * ratio;
 		let realY = areaY * ratio;
-		console.log(`X: ${areaX} Y: ${areaY}`);
-		console.log(`X: ${realX} Y: ${realY}`);
+		// console.log(`X: ${areaX} Y: ${areaY}`);
+		// console.log(`X: ${realX} Y: ${realY}`);
 
 		if (realX < 41) realX = 41;
 		if (realY < 42) realY = 42;
@@ -194,7 +187,7 @@ function Game() {
 			.sort((a, b) => a.sort - b.sort)
 			.map(({ value }) => value);
 
-		console.log(shuffledLevels);
+		// console.log(shuffledLevels);
 		nextLevel();
 	}
 
@@ -213,13 +206,7 @@ function Game() {
 		let level = shuffledLevels[currentLevel - 1];
 		level = level[level.length - 5];
 
-		let solution = [];
-		for (let i = 0; i < levelsAPI.length; i++) {
-			const levelAPI = levelsAPI[i];
-			if (levelAPI.name == level) {
-				solution = levelAPI.solution;
-			}
-		}
+		let solution = levelList[level].solution;
 
 		if (
 			selectedCoords[0] < solution[0] + leeway &&
@@ -227,13 +214,11 @@ function Game() {
 			selectedCoords[1] < solution[1] + leeway &&
 			selectedCoords[1] > solution[1] - leeway
 		) {
-			console.log("Correct");
 			audioSelect.play();
-			if (currentLevel == levelsAPI.length) {
+			if (currentLevel == levelList.length) {
 				endGame();
 			} else nextLevel();
 		} else {
-			console.log("False");
 			audioDenied.play();
 		}
 
@@ -289,7 +274,6 @@ function Game() {
 		audioSelect.play();
 		const div = document.querySelector(".submit-name");
 		div.classList.add("submitted-name");
-		console.log("name submitted");
 		setNameSubmitted(true);
 	}
 
