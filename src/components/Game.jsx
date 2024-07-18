@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import Video from "./Video";
 import Leaderboard from "./Leaderboard";
@@ -6,11 +6,13 @@ import Leaderboard from "./Leaderboard";
 import imgCombineLogo from "/src/assets/combine_logo.png";
 import imgBarcode from "/src/assets/barcode.png";
 
-import audHover from "/src/assets/hover.wav";
-import audSelect from "/src/assets/select.wav";
-import audStart from "/src/assets/start.wav";
-import audOpen from "/src/assets/open.wav";
-import audComplete from "/src/assets/complete.wav";
+import audHover from "/src/assets/audio/ui_hover.wav";
+import audSelect from "/src/assets/audio/ui_select.wav";
+import audDenied from "/src/assets/audio/ui_denied.wav";
+import audStart from "/src/assets/audio/upgrading.wav";
+import audOpen from "/src/assets/audio/chamber_open.wav";
+import audComplete from "/src/assets/audio/work_complete.wav";
+import audOpen2 from "/src/assets/audio/upgrader_open.wav";
 
 import level1 from "/src/assets/levels/1.png";
 import level2 from "/src/assets/levels/2.png";
@@ -77,7 +79,7 @@ function Game() {
 	function handleHover(e) {
 		if (e.target.classList.contains("not-selectable") == false) {
 			const audioHover = new Audio(audHover);
-			audioHover.volume = 0.4;
+			audioHover.volume = 0.5;
 			audioHover.play();
 		}
 	}
@@ -94,32 +96,29 @@ function Game() {
 	// Start Game
 	function handleStartClick() {
 		const audioSelect = new Audio(audSelect);
-		const audioStart = new Audio(audStart);
 		const audioOpen = new Audio(audOpen);
-		const audioComplete = new Audio(audComplete);
-		audioSelect.volume = 0.4;
-		audioStart.volume = 0.3;
-		audioOpen.volume = 0.3;
-		audioComplete.volume = 0.4;
+		const audioOpen2 = new Audio(audOpen2);
+		audioSelect.volume = 0.5;
+		audioOpen.volume = 0.5;
+		audioOpen2.volume = 0.5;
 
 		generateLevels();
 		fetchRecords();
 		audioSelect.play();
-		setVideo("Process");
+		setVideo("Boot");
 		setStartVisibility(false);
 		setUIvisibility(false);
 		audioOpen.play();
 		setTimeout(() => {
-			audioStart.play();
+			audioOpen2.play();
 		}, 1000);
 		setTimeout(() => {
-			audioComplete.play();
 			setVideo("Loop");
 			setUIvisibility(true);
 			setGameVisibility(true);
 			setTimeVisibility(true);
 			setTimeRunning(true);
-		}, 9000);
+		}, 4000);
 	}
 
 	function toggleFullscreen(event) {
@@ -206,7 +205,9 @@ function Game() {
 
 	function handleSubmit() {
 		const audioSelect = new Audio(audSelect);
-		audioSelect.volume = 0.4;
+		const audioDenied = new Audio(audDenied);
+		audioSelect.volume = 0.5;
+		audioDenied.volume = 0.5;
 
 		if (currentLevel == levelsAPI.length) {
 			endGame();
@@ -235,6 +236,7 @@ function Game() {
 			nextLevel();
 		} else {
 			console.log("False");
+			audioDenied.play();
 		}
 
 		setSelectVisibility(false);
@@ -245,9 +247,9 @@ function Game() {
 		const audioStart = new Audio(audStart);
 		const audioOpen = new Audio(audOpen);
 		const audioComplete = new Audio(audComplete);
-		audioStart.volume = 0.3;
-		audioOpen.volume = 0.3;
-		audioComplete.volume = 0.4;
+		audioStart.volume = 0.5;
+		audioOpen.volume = 0.5;
+		audioComplete.volume = 0.5;
 
 		setTimeRunning(false);
 		setUIvisibility(false);
@@ -284,6 +286,9 @@ function Game() {
 	}
 
 	function handleNameSubmit() {
+		const audioSelect = new Audio(audSelect);
+		audioSelect.volume = 0.5;
+		audioSelect.play();
 		const div = document.querySelector(".submit-name");
 		div.classList.add("submitted-name");
 		console.log("name submitted");
@@ -334,7 +339,9 @@ function Game() {
 								{nameSubmitted ? (
 									<>
 										<h2>RECORD SUBMITTED</h2>
-										<button onClick={restartGame}>RESTART</button>
+										<button onClick={restartGame} onMouseEnter={handleHover}>
+											RESTART
+										</button>
 									</>
 								) : (
 									<>
