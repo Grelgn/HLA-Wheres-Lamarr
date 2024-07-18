@@ -25,7 +25,7 @@ import levelsJSON from "/levels.json";
 const levels = [level0, level1, level2, level3, level4];
 let shuffledLevels = levels;
 
-function Game() {
+function Main(props) {
 	const [video, setVideo] = useState("Loop");
 	const [startVisibility, setStartVisibility] = useState(true);
 	const [UIvisibility, setUIvisibility] = useState(true);
@@ -95,6 +95,10 @@ function Game() {
 		audioOpen.volume = 0.5;
 		audioOpen2.volume = 0.5;
 
+		props.setAroundVisibility(false);
+		const root = document.querySelector("#root");
+		root.classList.add("root-game");
+
 		generateLevels();
 		fetchRecords();
 		audioSelect.play();
@@ -146,13 +150,11 @@ function Game() {
 	function handleImgClick(e) {
 		if (!selectVisibility) setSelectVisibility(true);
 		let { x, y, height } = e.target.getBoundingClientRect();
-		const areaX = e.clientX - x;
-		const areaY = e.clientY - y;
-		const ratio = 1080 / height;
+		const areaX = e.clientX - Math.round(x);
+		const areaY = e.clientY - Math.round(y);
+		const ratio = 1080.0 / height;
 		let realX = areaX * ratio;
 		let realY = areaY * ratio;
-		// console.log(`X: ${areaX} Y: ${areaY}`);
-		// console.log(`X: ${realX} Y: ${realY}`);
 
 		if (realX < 41) realX = 41;
 		if (realY < 42) realY = 42;
@@ -163,12 +165,9 @@ function Game() {
 		const coordX = realX / ratio + x;
 		const coordY = realY / ratio + y;
 
-		const header = document.querySelector("header");
-		const headerHeight = header.clientHeight;
-
 		const selection = document.querySelector(".select-area");
 		selection.style.left = `calc(${coordX}px - 2.5vh)`;
-		selection.style.top = `calc(${coordY}px - 2.5vh - ${headerHeight}px)`;
+		selection.style.top = `calc(${coordY}px - 2.5vh)`;
 
 		setSelectedCoords([Math.round(realX), Math.round(realY)]);
 		setIsSubmittable(true);
@@ -250,6 +249,10 @@ function Game() {
 			populateLeaderboard();
 			setGameEndVisibility(true);
 			setTimeVisibility(true);
+
+			props.setAroundVisibility(true);
+			const root = document.querySelector("#root");
+			root.classList.remove("root-game");
 		}, 9000);
 	}
 
@@ -415,4 +418,4 @@ function Game() {
 	);
 }
 
-export default Game;
+export default Main;

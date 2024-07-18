@@ -1,13 +1,16 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Game from "./components/Game";
+import Main from "./components/Main";
+import { useState } from "react";
 
 function App() {
+	const [aroundVisibility, setAroundVisibility] = useState(true);
+
 	return (
 		<>
-			<Header />
-			<Game />
-			<Footer />
+			{aroundVisibility && <Header />}
+			<Main setAroundVisibility={setAroundVisibility}/>
+			{aroundVisibility && <Footer />}
 		</>
 	);
 }

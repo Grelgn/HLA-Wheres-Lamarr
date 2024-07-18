@@ -19,7 +19,14 @@ body {
 #root {
 	display: grid;
 	height: 100svh;
-	grid-template-rows: auto 1fr;
+}
+
+.root {
+	grid-template-rows: auto 1fr auto;
+}
+
+.root-game {
+	grid-template-rows: 1fr
 }
 
 header {
@@ -189,7 +196,7 @@ button:hover {
 }
 
 .game img {
-	height: calc(100vh - 119px - 35px - 55px - 115px);
+	height: calc(100vh - 150px - 55px);
 	margin-left: 1.4vw;
 	border-bottom: 1px solid var(--combine-dark);
 	padding-bottom: 5px;
@@ -333,27 +340,4 @@ button:focus {
 
 .hidden {
 	visibility: hidden;
-}
-
-@media (max-height: 800px) {
-	header,
-	footer {
-		display: none;
-	}
-
-	#root {
-		grid-template-rows: 1fr;
-	}
-
-	.game img {
-		height: calc(100vh - 55px - 115px);
-	}
-
-	.submit-name {
-		padding-top: calc(50vh - 55px - 110px);
-	}
-
-	.submitted-name {
-		padding-top: calc(50vh - 55px - 65px);
-	}
 }
