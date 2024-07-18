@@ -1,6 +1,6 @@
-import vidBoot from "/src/assets/wupgrade_boot.webm";
-import vidLoop from "/src/assets/Wupgrade_Loop.mp4";
-import vidProcess from "/src/assets/Wupgrade_Process.mp4";
+import vidBoot from "/src/assets/wupgrade_boot.mp4";
+import vidLoop from "/src/assets/wupgrade_loop.mp4";
+import vidProcess from "/src/assets/wupgrade_frabrication.mp4";
 import tempBG from "/src/assets/temp_background.png";
 
 function Video(props) {

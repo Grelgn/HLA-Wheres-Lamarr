@@ -209,10 +209,6 @@ function Game() {
 		audioSelect.volume = 0.5;
 		audioDenied.volume = 0.5;
 
-		if (currentLevel == levelsAPI.length) {
-			endGame();
-		}
-
 		const leeway = 35;
 		let level = shuffledLevels[currentLevel - 1];
 		level = level[level.length - 5];
@@ -233,7 +229,9 @@ function Game() {
 		) {
 			console.log("Correct");
 			audioSelect.play();
-			nextLevel();
+			if (currentLevel == levelsAPI.length) {
+				endGame();
+			} else nextLevel();
 		} else {
 			console.log("False");
 			audioDenied.play();
@@ -393,17 +391,22 @@ function Game() {
 				<div className="right">
 					<div className="game-right">
 						{gameVisibility && (
-							<button
-								className={
-									"submit-selection submittable " +
-									(isSubmittable ? null : "not-selectable")
-								}
-								disabled={isSubmittable ? false : true}
-								onClick={handleSubmit}
-								onMouseEnter={handleHover}
-							>
-								SUBMIT SELECTION
-							</button>
+							<>
+								<div className="level-info">
+									<h2>STAGE: {currentLevel}</h2>
+								</div>
+								<button
+									className={
+										"submit-selection submittable " +
+										(isSubmittable ? null : "not-selectable")
+									}
+									disabled={isSubmittable ? false : true}
+									onClick={handleSubmit}
+									onMouseEnter={handleHover}
+								>
+									SUBMIT SELECTION
+								</button>
+							</>
 						)}
 						<Leaderboard
 							gameEndVisibility={gameEndVisibility}
