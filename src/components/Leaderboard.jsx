@@ -1,4 +1,25 @@
 function Leaderboard(props) {
+	function formatTime(start, end) {
+		let formatted = "";
+
+		start = new Date(start);
+		end = new Date(end);
+
+		let milliseconds = Math.abs(end - start);
+
+		const time = new Date(Date.UTC(0, 0, 0, 0, 0, 0, milliseconds));
+		const parts = [
+			time.getUTCHours(),
+			time.getUTCMinutes(),
+			time.getUTCSeconds(),
+		];
+
+		formatted = parts.map((s) => String(s).padStart(2, "0")).join(":");
+		if (formatted.slice(0, 2) == "00") formatted = formatted.slice(3);
+
+		return formatted;
+	}
+
 	return (
 		<>
 			{props.gameEndVisibility && (
@@ -18,7 +39,12 @@ function Leaderboard(props) {
 									arr.push(
 										<tr key={i}>
 											<td>{props.leaderboard[i].name}</td>
-											<td>{props.leaderboard[i].time}</td>
+											<td>
+												{formatTime(
+													props.leaderboard[i].timeStart,
+													props.leaderboard[i].timeEnd
+												)}
+											</td>
 										</tr>
 									);
 								}

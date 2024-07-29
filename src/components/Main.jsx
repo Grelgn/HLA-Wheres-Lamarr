@@ -266,9 +266,10 @@ function Main(props) {
 	function populateLeaderboard() {
 		setLeaderboard(
 			records.filter((record) => {
-				return record.name !== undefined;
+				return record.name !== null;
 			})
 		);
+		console.log(records);
 	}
 
 	function handleNameSubmit() {
