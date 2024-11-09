@@ -14,16 +14,91 @@ import audOpen from "/src/assets/audio/chamber_open.wav";
 import audComplete from "/src/assets/audio/work_complete.wav";
 import audOpen2 from "/src/assets/audio/upgrader_open.wav";
 
-import level0 from "/src/assets/levels/0.png";
-import level1 from "/src/assets/levels/1.png";
-import level2 from "/src/assets/levels/2.png";
-import level3 from "/src/assets/levels/3.png";
-import level4 from "/src/assets/levels/4.png";
+import level1 from "/src/assets/levels/level_1.png";
+import level2 from "/src/assets/levels/level_2.png";
+import level3 from "/src/assets/levels/level_3.png";
+import level4 from "/src/assets/levels/level_4.png";
+import level5 from "/src/assets/levels/level_5.png";
+import level6 from "/src/assets/levels/level_6.png";
+import level7 from "/src/assets/levels/level_7.png";
+import level8 from "/src/assets/levels/level_8.png";
+import level9 from "/src/assets/levels/level_9.png";
+import level10 from "/src/assets/levels/level_10.png";
+import level11 from "/src/assets/levels/level_11.png";
+import level12 from "/src/assets/levels/level_12.png";
+import level13 from "/src/assets/levels/level_13.png";
+import level14 from "/src/assets/levels/level_14.png";
+import level15 from "/src/assets/levels/level_15.png";
+import level16 from "/src/assets/levels/level_16.png";
+import level17 from "/src/assets/levels/level_17.png";
+import level18 from "/src/assets/levels/level_18.png";
+import level19 from "/src/assets/levels/level_19.png";
+import level20 from "/src/assets/levels/level_20.png";
+import level21 from "/src/assets/levels/level_21.png";
+import level22 from "/src/assets/levels/level_22.png";
+import level23 from "/src/assets/levels/level_23.png";
+import level24 from "/src/assets/levels/level_24.png";
+import level25 from "/src/assets/levels/level_25.png";
+import level26 from "/src/assets/levels/level_26.png";
+import level27 from "/src/assets/levels/level_27.png";
+import level28 from "/src/assets/levels/level_28.png";
+import level29 from "/src/assets/levels/level_29.png";
+import level30 from "/src/assets/levels/level_30.png";
+import level31 from "/src/assets/levels/level_31.png";
+import level32 from "/src/assets/levels/level_32.png";
+import level33 from "/src/assets/levels/level_33.png";
+import level34 from "/src/assets/levels/level_34.png";
+import level35 from "/src/assets/levels/level_35.png";
+import level36 from "/src/assets/levels/level_36.png";
+import level37 from "/src/assets/levels/level_37.png";
+import level38 from "/src/assets/levels/level_38.png";
+import level39 from "/src/assets/levels/level_39.png";
+import level40 from "/src/assets/levels/level_40.png";
 
 import levelsJSON from "/levels.json";
 
-const levels = [level0, level1, level2, level3, level4];
-let shuffledLevels = levels;
+const levels = [
+	level1,
+	level2,
+	level3,
+	level4,
+	level5,
+	level6,
+	level7,
+	level8,
+	level9,
+	level10,
+	level11,
+	level12,
+	level13,
+	level14,
+	level15,
+	level16,
+	level17,
+	level18,
+	level19,
+	level20,
+	level21,
+	level22,
+	level23,
+	level24,
+	level25,
+	level26,
+	level27,
+	level28,
+	level29,
+	level30,
+	level31,
+	level32,
+	level33,
+	level34,
+	level35,
+	level36,
+	level37,
+	level38,
+	level39,
+	level40,
+];
 
 function Main(props) {
 	const [video, setVideo] = useState("Loop");
@@ -99,7 +174,7 @@ function Main(props) {
 		const root = document.querySelector("#root");
 		root.classList.add("root-game");
 
-		generateLevels();
+		nextLevel();
 		fetchRecords();
 		audioSelect.play();
 		setVideo("Boot");
@@ -179,19 +254,8 @@ function Main(props) {
 		setIsSubmittable(false);
 	});
 
-	// Level logic
-	function generateLevels() {
-		shuffledLevels = levels
-			.map((value) => ({ value, sort: Math.random() }))
-			.sort((a, b) => a.sort - b.sort)
-			.map(({ value }) => value);
-
-		// console.log(shuffledLevels);
-		nextLevel();
-	}
-
 	function nextLevel() {
-		setLevelImage(shuffledLevels[currentLevel]);
+		setLevelImage(levels[currentLevel]);
 		setCurrentLevel(currentLevel + 1);
 	}
 
@@ -202,10 +266,10 @@ function Main(props) {
 		audioDenied.volume = 0.5;
 
 		const leeway = 35;
-		let level = shuffledLevels[currentLevel - 1];
-		level = level[level.length - 5];
+		console.log(currentLevel);
 
-		let solution = levelList[level].solution;
+		let solution = levelList[currentLevel - 1].solution;
+		console.log(solution);
 
 		if (
 			selectedCoords[0] < solution[0] + leeway &&
