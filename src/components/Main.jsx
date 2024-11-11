@@ -15,7 +15,7 @@ import audComplete from "/src/assets/audio/work_complete.wav";
 import audOpen2 from "/src/assets/audio/upgrader_open.wav";
 
 // Import levels
-let levels = Object.keys(import.meta.glob("/src/assets/levels/*.webp"));
+const levels = Object.keys(import.meta.glob("/src/assets/levels/*.webp"));
 
 import levelsJSON from "/levels.json";
 
@@ -39,6 +39,8 @@ function Main(props) {
 	const [isSubmittable, setIsSubmittable] = useState(false);
 	const [nameSubmittable, setNameSubmittable] = useState(false);
 	const [nameSubmitted, setNameSubmitted] = useState(false);
+	const [userID, setUserID] = useState("");
+	const [userName, setUserName] = useState("");
 
 	// Timer
 	useEffect(() => {
@@ -74,6 +76,7 @@ function Main(props) {
 	// Make button submittable on > 3 characters
 	function validateName(e) {
 		if (e.target.value.length >= 3) {
+			setUserName(e.target.value);
 			setNameSubmittable(true);
 		} else if (e.target.value.length < 3) {
 			setNameSubmittable(false);
@@ -109,6 +112,7 @@ function Main(props) {
 			setGameVisibility(true);
 			setTimeVisibility(true);
 			setTimeRunning(true);
+			startTime();
 		}, 4000);
 	}
 
@@ -185,10 +189,8 @@ function Main(props) {
 		audioDenied.volume = 0.5;
 
 		const leeway = 35;
-		console.log(currentLevel);
 
 		let solution = levelList[currentLevel - 1].solution;
-		console.log(solution);
 
 		if (
 			selectedCoords[0] < solution[0] + leeway &&
@@ -216,6 +218,7 @@ function Main(props) {
 		audioOpen.volume = 0.5;
 		audioComplete.volume = 0.5;
 
+		endTime();
 		setTimeRunning(false);
 		setUIvisibility(false);
 		setGameVisibility(false);
@@ -246,6 +249,36 @@ function Main(props) {
 			.catch((error) => console.error(error));
 	}
 
+	async function startTime() {
+		const response = await fetch("http://localhost:3000/record", {
+			method: "POST",
+		});
+		const content = await response.json();
+		setUserID(content.id);
+		console.log(content.message);
+	}
+
+	async function endTime() {
+		const response = await fetch("http://localhost:3000/record/" + userID, {
+			method: "PATCH",
+		});
+		const content = await response.json();
+		console.log(content.message);
+	}
+
+	async function addName() {
+		const urlencoded = new URLSearchParams({
+			name: userName,
+		});
+
+		const response = await fetch("http://localhost:3000/record/" + userID, {
+			method: "PATCH",
+			body: urlencoded,
+		});
+		const content = await response.json();
+		console.log(content.message);
+	}
+
 	function populateLeaderboard() {
 		setLeaderboard(
 			records.filter((record) => {
@@ -262,6 +295,7 @@ function Main(props) {
 		const div = document.querySelector(".submit-name");
 		div.classList.add("submitted-name");
 		setNameSubmitted(true);
+		addName();
 	}
 
 	function restartGame() {
