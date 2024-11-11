@@ -280,12 +280,22 @@ function Main(props) {
 	}
 
 	function populateLeaderboard() {
-		setLeaderboard(
-			records.filter((record) => {
-				return record.name !== null;
-			})
-		);
-		console.log(records);
+		let leaderboard = records.filter((record) => {
+			return record.name !== null;
+		});
+
+		leaderboard.forEach((record) => {
+			const start = new Date(record.timeStart);
+			const end = new Date(record.timeEnd);
+
+			let milliseconds = Math.abs(end - start);
+
+			record.milliseconds = milliseconds;
+		});
+
+		leaderboard.sort((a, b) => a.milliseconds - b.milliseconds);
+
+		setLeaderboard(leaderboard);
 	}
 
 	function handleNameSubmit() {

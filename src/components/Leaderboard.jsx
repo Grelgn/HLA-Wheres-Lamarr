@@ -1,11 +1,6 @@
 function Leaderboard(props) {
-	function formatTime(start, end) {
+	function formatTime(milliseconds) {
 		let formatted = "";
-
-		start = new Date(start);
-		end = new Date(end);
-
-		let milliseconds = Math.abs(end - start);
 
 		const time = new Date(Date.UTC(0, 0, 0, 0, 0, 0, milliseconds));
 		const parts = [
@@ -39,12 +34,7 @@ function Leaderboard(props) {
 									arr.push(
 										<tr key={i}>
 											<td>{props.leaderboard[i].name}</td>
-											<td>
-												{formatTime(
-													props.leaderboard[i].timeStart,
-													props.leaderboard[i].timeEnd
-												)}
-											</td>
+											<td>{formatTime(props.leaderboard[i].milliseconds)}</td>
 										</tr>
 									);
 								}
