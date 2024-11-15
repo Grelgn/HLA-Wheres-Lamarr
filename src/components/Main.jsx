@@ -232,7 +232,6 @@ function Main(props) {
 			audioComplete.play();
 			setVideo("Loop");
 			setUIvisibility(true);
-			populateLeaderboard();
 			setGameEndVisibility(true);
 			setTimeVisibility(true);
 
@@ -242,11 +241,12 @@ function Main(props) {
 		}, 9000);
 	}
 
-	function fetchRecords() {
-		fetch("http://localhost:3000/records")
-			.then((response) => response.json())
-			.then((json) => setRecords(json))
-			.catch((error) => console.error(error));
+	async function fetchRecords() {
+		const response = await fetch("http://localhost:3000/records", {
+			method: "GET",
+		});
+		const content = await response.json();
+		setRecords(content);
 	}
 
 	async function startTime() {
@@ -279,33 +279,38 @@ function Main(props) {
 		console.log(content.message);
 	}
 
-	function populateLeaderboard() {
-		let leaderboard = records.filter((record) => {
-			return record.name !== null;
-		});
+	// Populate leaderboard when records are updated
+	useEffect(() => {
+		if (records !== "") {
+			let board = records.filter((record) => {
+				return record.name !== null;
+			});
 
-		leaderboard.forEach((record) => {
-			const start = new Date(record.timeStart);
-			const end = new Date(record.timeEnd);
+			board.forEach((record) => {
+				const start = new Date(record.timeStart);
+				const end = new Date(record.timeEnd);
 
-			let milliseconds = Math.abs(end - start);
+				let milliseconds = Math.abs(end - start);
 
-			record.milliseconds = milliseconds;
-		});
+				record.milliseconds = milliseconds;
+			});
 
-		leaderboard.sort((a, b) => a.milliseconds - b.milliseconds);
+			board.sort((a, b) => a.milliseconds - b.milliseconds);
+			board = board.slice(0, 10);
 
-		setLeaderboard(leaderboard);
-	}
+			setLeaderboard(board);
+		}
+	}, [records]);
 
-	function handleNameSubmit() {
+	async function handleNameSubmit() {
 		const audioSelect = new Audio(audSelect);
 		audioSelect.volume = 0.5;
 		audioSelect.play();
 		const div = document.querySelector(".submit-name");
 		div.classList.add("submitted-name");
 		setNameSubmitted(true);
-		addName();
+		await addName();
+		fetchRecords();
 	}
 
 	function restartGame() {
