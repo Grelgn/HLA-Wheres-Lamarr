@@ -14,6 +14,8 @@ import audOpen from "/src/assets/audio/chamber_open.wav";
 import audComplete from "/src/assets/audio/work_complete.wav";
 import audOpen2 from "/src/assets/audio/upgrader_open.wav";
 
+const database = import.meta.env.VITE_DATABASE;
+
 // Import levels
 const levels = Object.keys(import.meta.glob("/src/assets/levels/*.webp"));
 
@@ -97,7 +99,6 @@ function Main(props) {
 		root.classList.add("root-game");
 
 		nextLevel();
-		fetchRecords();
 		audioSelect.play();
 		setVideo("Boot");
 		setStartVisibility(false);
@@ -218,6 +219,7 @@ function Main(props) {
 		audioOpen.volume = 0.5;
 		audioComplete.volume = 0.5;
 
+		fetchRecords();
 		endTime();
 		setTimeRunning(false);
 		setUIvisibility(false);
@@ -242,7 +244,7 @@ function Main(props) {
 	}
 
 	async function fetchRecords() {
-		const response = await fetch("http://localhost:3000/records", {
+		const response = await fetch(database + "records", {
 			method: "GET",
 		});
 		const content = await response.json();
@@ -250,7 +252,7 @@ function Main(props) {
 	}
 
 	async function startTime() {
-		const response = await fetch("http://localhost:3000/record", {
+		const response = await fetch(database + "record", {
 			method: "POST",
 		});
 		const content = await response.json();
@@ -259,7 +261,7 @@ function Main(props) {
 	}
 
 	async function endTime() {
-		const response = await fetch("http://localhost:3000/record/" + userID, {
+		const response = await fetch(database + "record/" + userID, {
 			method: "PATCH",
 		});
 		const content = await response.json();
@@ -271,7 +273,7 @@ function Main(props) {
 			name: userName,
 		});
 
-		const response = await fetch("http://localhost:3000/record/" + userID, {
+		const response = await fetch(database + "record/" + userID, {
 			method: "PATCH",
 			body: urlencoded,
 		});

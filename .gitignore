@@ -25,3 +25,4 @@ dist-ssr
 
 # Mine
 .eslintrc.cjs
+.env
