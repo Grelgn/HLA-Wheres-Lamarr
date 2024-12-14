@@ -273,7 +273,7 @@ function Main(props) {
 		audioSelect.volume = 0.5;
 		audioDenied.volume = 0.5;
 
-		const leeway = 35;
+		const leeway = levelList[currentLevel - 1].hitbox;
 
 		let solution = levelList[currentLevel - 1].solution;
 
@@ -341,15 +341,12 @@ function Main(props) {
 		});
 		const content = await response.json();
 		setUserID(content.id);
-		console.log(content.message);
 	}
 
 	async function endTime() {
-		const response = await fetch(database + "record/" + userID, {
+		await fetch(database + "record/" + userID, {
 			method: "PATCH",
 		});
-		const content = await response.json();
-		console.log(content.message);
 	}
 
 	async function addName() {
@@ -357,12 +354,10 @@ function Main(props) {
 			name: userName,
 		});
 
-		const response = await fetch(database + "record/" + userID, {
+		await fetch(database + "record/" + userID, {
 			method: "PATCH",
 			body: urlencoded,
 		});
-		const content = await response.json();
-		console.log(content.message);
 	}
 
 	// Populate leaderboard when records are updated
